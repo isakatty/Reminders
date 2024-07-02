@@ -18,7 +18,7 @@ final class AddReminderBasicCell: BaseTableViewCell {
         let image = UIImageView()
         image.contentMode = .scaleAspectFit
         image.image = UIImage(systemName: "chevron.right")?.withRenderingMode(.alwaysOriginal)
-        image.tintColor = .black
+        image.tintColor = Constant.Color.black
         return image
     }()
     
@@ -37,6 +37,7 @@ final class AddReminderBasicCell: BaseTableViewCell {
             make.trailing.equalToSuperview().inset(Constant.Spacing.twelve.toCGFloat)
             make.centerY.equalToSuperview()
             make.height.width.equalTo(20)
+            make.leading.greaterThanOrEqualTo(titleLabel.snp.trailing)
             
         }
     }

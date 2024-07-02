@@ -24,19 +24,6 @@ final class AddReminderTextFieldTableViewCell: BaseTableViewCell {
         return view
     }()
     
-//    override init(
-//        style: UITableViewCell.CellStyle,
-//        reuseIdentifier: String?
-//    ) {
-//        super.init(
-//            style: style,
-//            reuseIdentifier: reuseIdentifier
-//        )
-//        
-//        configureHierarchy()
-//        configureLayout()
-//    }
-//    
     override func configureHierarchy() {
         [titleTextField, separateBar, contentTextView]
             .forEach { contentView.addSubview($0) }
@@ -46,7 +33,7 @@ final class AddReminderTextFieldTableViewCell: BaseTableViewCell {
             make.top.equalToSuperview().offset(Constant.Spacing.eight.toCGFloat)
             make.leading.equalToSuperview().inset(Constant.Spacing.twelve.toCGFloat)
             make.trailing.equalToSuperview().inset(Constant.Spacing.twelve.toCGFloat)
-            make.height.equalTo(50)
+            make.height.equalTo(30)
         }
         separateBar.snp.makeConstraints { make in
             make.top.equalTo(titleTextField.snp.bottom)
@@ -54,7 +41,7 @@ final class AddReminderTextFieldTableViewCell: BaseTableViewCell {
             make.height.equalTo(1)
         }
         contentTextView.snp.makeConstraints { make in
-            make.top.equalTo(separateBar.snp.bottom).inset(Constant.Spacing.four.toCGFloat)
+            make.top.equalTo(separateBar.snp.bottom).inset(-Constant.Spacing.four.toCGFloat)
             make.leading.trailing.equalTo(titleTextField)
             make.height.greaterThanOrEqualTo(100)
             make.bottom.equalToSuperview().inset(10)

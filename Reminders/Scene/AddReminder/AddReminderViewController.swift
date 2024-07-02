@@ -45,7 +45,6 @@ final class AddReminderViewController: BaseViewController {
         )
         table.sectionHeaderHeight = 0
         table.sectionFooterHeight = 0
-//        table.sectionHeaderTopPadding = 5
         table.rowHeight = UITableView.automaticDimension
         return table
     }()
@@ -96,7 +95,6 @@ extension AddReminderViewController
     ) -> Int {
         return 1
     }
-    
     func tableView(
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
@@ -131,6 +129,14 @@ extension AddReminderViewController
             return 20
         default:
             return 10
+        }
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch AddReminderSection.allCases[indexPath.section] {
+        case .todo:
+            return UITableView.automaticDimension
+        default:
+            return 40
         }
     }
 }
