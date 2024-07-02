@@ -26,6 +26,8 @@
 		C9DF62B22C344F5C00294B4B /* AddReminderBasicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62B12C344F5C00294B4B /* AddReminderBasicCell.swift */; };
 		C9DF62B42C34B49F00294B4B /* ReminderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62B32C34B49F00294B4B /* ReminderListViewController.swift */; };
 		C9DF62B62C34B54600294B4B /* ReminderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62B52C34B54600294B4B /* ReminderTableViewCell.swift */; };
+		C9DF62B82C34C10400294B4B /* Reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62B72C34C10400294B4B /* Reminder.swift */; };
+		C9DF62BB2C34C1A300294B4B /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C9DF62BA2C34C1A300294B4B /* RealmSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +51,7 @@
 		C9DF62B12C344F5C00294B4B /* AddReminderBasicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReminderBasicCell.swift; sourceTree = "<group>"; };
 		C9DF62B32C34B49F00294B4B /* ReminderListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderListViewController.swift; sourceTree = "<group>"; };
 		C9DF62B52C34B54600294B4B /* ReminderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderTableViewCell.swift; sourceTree = "<group>"; };
+		C9DF62B72C34C10400294B4B /* Reminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reminder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9DF62BB2C34C1A300294B4B /* RealmSwift in Frameworks */,
 				C9DF62B02C341F8C00294B4B /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -172,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				C9DF62972C34027500294B4B /* ReminderCategory.swift */,
+				C9DF62B72C34C10400294B4B /* Reminder.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -219,6 +224,7 @@
 			name = Reminders;
 			packageProductDependencies = (
 				C9DF62AF2C341F8C00294B4B /* SnapKit */,
+				C9DF62BA2C34C1A300294B4B /* RealmSwift */,
 			);
 			productName = Reminders;
 			productReference = C951C1FE2C33FBD00057BD15 /* Reminders.app */;
@@ -250,6 +256,7 @@
 			mainGroup = C951C1F52C33FBD00057BD15;
 			packageReferences = (
 				C9DF62AE2C341F8C00294B4B /* XCRemoteSwiftPackageReference "SnapKit" */,
+				C9DF62B92C34C1A300294B4B /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			productRefGroup = C951C1FF2C33FBD00057BD15 /* Products */;
 			projectDirPath = "";
@@ -293,6 +300,7 @@
 				C9DF62B42C34B49F00294B4B /* ReminderListViewController.swift in Sources */,
 				C951C2042C33FBD00057BD15 /* SceneDelegate.swift in Sources */,
 				C9DF62B62C34B54600294B4B /* ReminderTableViewCell.swift in Sources */,
+				C9DF62B82C34C10400294B4B /* Reminder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -525,6 +533,14 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		C9DF62B92C34C1A300294B4B /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 10.52.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -532,6 +548,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C9DF62AE2C341F8C00294B4B /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		C9DF62BA2C34C1A300294B4B /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C9DF62B92C34C1A300294B4B /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

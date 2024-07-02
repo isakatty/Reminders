@@ -9,7 +9,6 @@ import UIKit
 
 final class ReminderTableViewCell: BaseTableViewCell {
     private var alreadyDid: Bool = false
-    
     private lazy var checkBtn: UIButton = {
         var config = UIButton.Configuration.plain()
         config.baseBackgroundColor = .clear
@@ -79,7 +78,6 @@ final class ReminderTableViewCell: BaseTableViewCell {
         reminderContentLabel.text = content
         dueDateLabel.text = date
     }
-    
     private func makeLabel(
         text: String?,
         textSize: UIFont,
@@ -94,14 +92,14 @@ final class ReminderTableViewCell: BaseTableViewCell {
         label.numberOfLines = lines
         return label
     }
-    @objc private func checkBtnTapped() {
-        alreadyDid = !alreadyDid
-        configBtn(checked: alreadyDid)
-    }
     private func configBtn(checked: Bool) {
         var config = checkBtn.configuration
         config?.image = UIImage(systemName: checked ? "circle.fill" : "circle")
         checkBtn.configuration = config
+    }
+    @objc private func checkBtnTapped() {
+        alreadyDid = !alreadyDid
+        configBtn(checked: alreadyDid)
     }
 }
 
