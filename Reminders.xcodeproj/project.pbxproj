@@ -9,19 +9,42 @@
 /* Begin PBXBuildFile section */
 		C951C2022C33FBD00057BD15 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C951C2012C33FBD00057BD15 /* AppDelegate.swift */; };
 		C951C2042C33FBD00057BD15 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C951C2032C33FBD00057BD15 /* SceneDelegate.swift */; };
-		C951C2062C33FBD00057BD15 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C951C2052C33FBD00057BD15 /* ViewController.swift */; };
+		C951C2062C33FBD00057BD15 /* ReminderCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C951C2052C33FBD00057BD15 /* ReminderCategoryViewController.swift */; };
 		C951C20B2C33FBD10057BD15 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C951C20A2C33FBD10057BD15 /* Assets.xcassets */; };
 		C951C20E2C33FBD10057BD15 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = C951C20D2C33FBD10057BD15 /* Base */; };
+		C9DF62952C3401E600294B4B /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62942C3401E600294B4B /* BaseViewController.swift */; };
+		C9DF62982C34027500294B4B /* ReminderCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62972C34027500294B4B /* ReminderCategory.swift */; };
+		C9DF629A2C34153300294B4B /* AddReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62992C34153300294B4B /* AddReminderViewController.swift */; };
+		C9DF629D2C34167500294B4B /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF629C2C34167500294B4B /* UIViewController+.swift */; };
+		C9DF629F2C341A9100294B4B /* AddReminderTextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF629E2C341A9100294B4B /* AddReminderTextFieldTableViewCell.swift */; };
+		C9DF62A12C341ABD00294B4B /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62A02C341ABD00294B4B /* BaseTableViewCell.swift */; };
+		C9DF62A32C341AF000294B4B /* ReusableIdentifierProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62A22C341AF000294B4B /* ReusableIdentifierProtocol.swift */; };
+		C9DF62A82C341B4E00294B4B /* UITableViewCell+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62A72C341B4E00294B4B /* UITableViewCell+.swift */; };
+		C9DF62AB2C341D1700294B4B /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62AA2C341D1700294B4B /* CustomTextField.swift */; };
+		C9DF62AD2C341DAD00294B4B /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62AC2C341DAD00294B4B /* Constant.swift */; };
+		C9DF62B02C341F8C00294B4B /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = C9DF62AF2C341F8C00294B4B /* SnapKit */; };
+		C9DF62B22C344F5C00294B4B /* AddReminderBasicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62B12C344F5C00294B4B /* AddReminderBasicCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		C951C1FE2C33FBD00057BD15 /* Reminders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reminders.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C951C2012C33FBD00057BD15 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C951C2032C33FBD00057BD15 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		C951C2052C33FBD00057BD15 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C951C2052C33FBD00057BD15 /* ReminderCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCategoryViewController.swift; sourceTree = "<group>"; };
 		C951C20A2C33FBD10057BD15 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C951C20D2C33FBD10057BD15 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C951C20F2C33FBD10057BD15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C9DF62942C3401E600294B4B /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		C9DF62972C34027500294B4B /* ReminderCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCategory.swift; sourceTree = "<group>"; };
+		C9DF62992C34153300294B4B /* AddReminderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReminderViewController.swift; sourceTree = "<group>"; };
+		C9DF629C2C34167500294B4B /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
+		C9DF629E2C341A9100294B4B /* AddReminderTextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReminderTextFieldTableViewCell.swift; sourceTree = "<group>"; };
+		C9DF62A02C341ABD00294B4B /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
+		C9DF62A22C341AF000294B4B /* ReusableIdentifierProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableIdentifierProtocol.swift; sourceTree = "<group>"; };
+		C9DF62A72C341B4E00294B4B /* UITableViewCell+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+.swift"; sourceTree = "<group>"; };
+		C9DF62AA2C341D1700294B4B /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		C9DF62AC2C341DAD00294B4B /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		C9DF62B12C344F5C00294B4B /* AddReminderBasicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReminderBasicCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9DF62B02C341F8C00294B4B /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,7 +98,13 @@
 		C9DF628D2C34010B00294B4B /* Global */ = {
 			isa = PBXGroup;
 			children = (
+				C9DF62A92C341D0900294B4B /* CustomView */,
+				C9DF62A42C341B0B00294B4B /* Protocol */,
+				C9DF629B2C34166C00294B4B /* Extension */,
+				C9DF62962C34023100294B4B /* Model */,
+				C9DF62932C3401DD00294B4B /* Base */,
 				C9DF628F2C34012700294B4B /* App */,
+				C9DF62AC2C341DAD00294B4B /* Constant.swift */,
 			);
 			path = Global;
 			sourceTree = "<group>";
@@ -101,7 +131,7 @@
 		C9DF62902C34013300294B4B /* ReminderCategory */ = {
 			isa = PBXGroup;
 			children = (
-				C951C2052C33FBD00057BD15 /* ViewController.swift */,
+				C951C2052C33FBD00057BD15 /* ReminderCategoryViewController.swift */,
 			);
 			path = ReminderCategory;
 			sourceTree = "<group>";
@@ -109,6 +139,9 @@
 		C9DF62912C34014C00294B4B /* AddReminder */ = {
 			isa = PBXGroup;
 			children = (
+				C9DF62992C34153300294B4B /* AddReminderViewController.swift */,
+				C9DF629E2C341A9100294B4B /* AddReminderTextFieldTableViewCell.swift */,
+				C9DF62B12C344F5C00294B4B /* AddReminderBasicCell.swift */,
 			);
 			path = AddReminder;
 			sourceTree = "<group>";
@@ -118,6 +151,48 @@
 			children = (
 			);
 			path = ReminderList;
+			sourceTree = "<group>";
+		};
+		C9DF62932C3401DD00294B4B /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				C9DF62942C3401E600294B4B /* BaseViewController.swift */,
+				C9DF62A02C341ABD00294B4B /* BaseTableViewCell.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		C9DF62962C34023100294B4B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C9DF62972C34027500294B4B /* ReminderCategory.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		C9DF629B2C34166C00294B4B /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				C9DF629C2C34167500294B4B /* UIViewController+.swift */,
+				C9DF62A72C341B4E00294B4B /* UITableViewCell+.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		C9DF62A42C341B0B00294B4B /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				C9DF62A22C341AF000294B4B /* ReusableIdentifierProtocol.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		C9DF62A92C341D0900294B4B /* CustomView */ = {
+			isa = PBXGroup;
+			children = (
+				C9DF62AA2C341D1700294B4B /* CustomTextField.swift */,
+			);
+			path = CustomView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -136,6 +211,9 @@
 			dependencies = (
 			);
 			name = Reminders;
+			packageProductDependencies = (
+				C9DF62AF2C341F8C00294B4B /* SnapKit */,
+			);
 			productName = Reminders;
 			productReference = C951C1FE2C33FBD00057BD15 /* Reminders.app */;
 			productType = "com.apple.product-type.application";
@@ -164,6 +242,9 @@
 				Base,
 			);
 			mainGroup = C951C1F52C33FBD00057BD15;
+			packageReferences = (
+				C9DF62AE2C341F8C00294B4B /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = C951C1FF2C33FBD00057BD15 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -190,8 +271,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C951C2062C33FBD00057BD15 /* ViewController.swift in Sources */,
+				C9DF629D2C34167500294B4B /* UIViewController+.swift in Sources */,
+				C951C2062C33FBD00057BD15 /* ReminderCategoryViewController.swift in Sources */,
+				C9DF62A82C341B4E00294B4B /* UITableViewCell+.swift in Sources */,
+				C9DF62A32C341AF000294B4B /* ReusableIdentifierProtocol.swift in Sources */,
+				C9DF62952C3401E600294B4B /* BaseViewController.swift in Sources */,
 				C951C2022C33FBD00057BD15 /* AppDelegate.swift in Sources */,
+				C9DF62B22C344F5C00294B4B /* AddReminderBasicCell.swift in Sources */,
+				C9DF62A12C341ABD00294B4B /* BaseTableViewCell.swift in Sources */,
+				C9DF62982C34027500294B4B /* ReminderCategory.swift in Sources */,
+				C9DF62AB2C341D1700294B4B /* CustomTextField.swift in Sources */,
+				C9DF62AD2C341DAD00294B4B /* Constant.swift in Sources */,
+				C9DF629F2C341A9100294B4B /* AddReminderTextFieldTableViewCell.swift in Sources */,
+				C9DF629A2C34153300294B4B /* AddReminderViewController.swift in Sources */,
 				C951C2042C33FBD00057BD15 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -415,6 +507,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C9DF62AE2C341F8C00294B4B /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C9DF62AF2C341F8C00294B4B /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C9DF62AE2C341F8C00294B4B /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C951C1F62C33FBD00057BD15 /* Project object */;
 }
