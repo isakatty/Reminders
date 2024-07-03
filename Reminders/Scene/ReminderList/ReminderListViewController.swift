@@ -7,7 +7,11 @@
 
 import UIKit
 
+import RealmSwift
+
 final class ReminderListViewController: BaseViewController {
+    var reminders: Results<Reminder>
+    
     private lazy var reminderTableView: UITableView = {
         let table = UITableView()
         table.delegate = self
@@ -19,6 +23,12 @@ final class ReminderListViewController: BaseViewController {
         table.rowHeight = 60
         return table
     }()
+    
+    init(reminders: Results<Reminder>) {
+        self.reminders = reminders
+        
+        super.init(viewTitle: ReminderCategory.whole.toString)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +54,7 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-        1
+        return reminders.count
     }
     
     func tableView(
@@ -56,8 +66,9 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
             for: indexPath
         ) as? ReminderTableViewCell else { return UITableViewCell() }
         
+        let reminder = reminders[indexPath.row]
 //        cell.backgroundColor = .yellow
-        cell.configureUI(title: "임시", content: "어쩌고 저쩌고", date: "위치만 일단")
+        cell.configureUI(title: reminder.title, content: reminder.content, date: reminder.date?.description)
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

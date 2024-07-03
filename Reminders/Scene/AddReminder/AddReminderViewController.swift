@@ -7,8 +7,11 @@
 
 import UIKit
 
+import RealmSwift
+
 final class AddReminderViewController: BaseViewController {
     private var canAdd: Bool = false
+    private var newReminder = Reminder(title: "", content: "", date: nil)
     private lazy var reminderTableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
         table.delegate = self
@@ -31,7 +34,6 @@ final class AddReminderViewController: BaseViewController {
         super.viewDidLoad()
         
         configureNavi()
-        print(navigationItem.rightBarButtonItem?.isEnabled)
     }
     
     override func configureHierarchy() {
@@ -59,10 +61,23 @@ final class AddReminderViewController: BaseViewController {
     }
     @objc private func cancelButtonTapped() {
         print("Tapped")
+        dismiss(animated: true)
     }
     @objc private func addButtonTapped() {
         print("Realm 저장")
-         
+        let realm = try! Realm()
+        
+        do {
+            try? realm.write({
+                realm.add(newReminder)
+                print("Realm 저장")
+                dismiss(animated: true)
+            })
+        } catch {
+            showAlert(title: "저장 안됨", message: "엥", ok: "엥쓰붸리ㅣ") {
+                
+            }
+        }
     }
 }
 extension AddReminderViewController
@@ -97,6 +112,9 @@ extension AddReminderViewController
                 canAdd = !canAdd
                 navigationItem.rightBarButtonItem?.isEnabled = canAdd
                 print(title, content)
+                newReminder.title = title
+                newReminder.content = content
+                newReminder.date = nil
             }
             
             return cell

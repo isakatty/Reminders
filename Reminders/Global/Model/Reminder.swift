@@ -18,14 +18,11 @@ final class Reminder: Object {
     @Persisted var idDone: Bool
     
     convenience init(
-        id: ObjectId,
         title: String,
-        content: String,
-        date: Date
+        content: String?,
+        date: Date?
     ) {
         self.init()
-        
-        self.id = id
         self.title = title
         self.content = content
         self.date = date

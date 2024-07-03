@@ -7,10 +7,14 @@
 
 import UIKit
 
+import RealmSwift
 import SnapKit
 
 final class ReminderCategoryViewController: BaseViewController {
 
+    var reminders: Results<Reminder>!
+    let realm = try! Realm()
+    
     private lazy var tempButton: UIButton = {
         let btn = UIButton()
         btn.setTitle("임시 버튼", for: .normal)
@@ -18,10 +22,13 @@ final class ReminderCategoryViewController: BaseViewController {
         btn.addTarget(self, action: #selector(tempTapped), for: .touchUpInside)
         return btn
     }()
-//    
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        print(realm.configuration.fileURL) // Realm 파일 위치 읽어오기
+        fetchData()
+    }
     
     override func configureHierarchy() {
         navigationItem.leftBarButtonItem = .init(
@@ -41,6 +48,12 @@ final class ReminderCategoryViewController: BaseViewController {
         }
         super.configureLayout()
     }
+    private func fetchData() {
+        // Realm 데이터 저장
+        reminders = realm.objects(Reminder.self)
+        tempButton.setTitle(String(reminders.count), for: .normal)
+        print(reminders.count)
+    }
 
     @objc private func addReminderTapped() {
         print("하이루")
@@ -49,7 +62,7 @@ final class ReminderCategoryViewController: BaseViewController {
         navigationController?.present(navi, animated: true)
     }
     @objc private func tempTapped() {
-        let vc = ReminderListViewController(viewTitle: ReminderCategory.whole.toString)
+        let vc = ReminderListViewController(reminders: reminders)
         navigationController?.pushViewController(vc, animated: true)
     }
 }
