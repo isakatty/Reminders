@@ -14,6 +14,9 @@ enum Constant {
         static let regular15 = UIFont.systemFont(ofSize: 15)
         static let regular16 = UIFont.systemFont(ofSize: 16)
         static let regular17 = UIFont.systemFont(ofSize: 17)
+        static let bold15 = UIFont.boldSystemFont(ofSize: 15)
+        static let bold16 = UIFont.boldSystemFont(ofSize: 16)
+        static let bold17 = UIFont.boldSystemFont(ofSize: 17)
     }
     
     enum Color {

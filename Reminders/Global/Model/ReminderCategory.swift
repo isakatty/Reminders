@@ -31,16 +31,28 @@ enum ReminderCategory: CaseIterable {
     
     var categoryImgStr: String {
         switch self {
-        case .today:
-            ""
-        case .upComing:
-            ""
+        case .today, .upComing:
+            "calendar"
         case .whole:
-            ""
+            "tray"
         case .flag:
-            ""
+            "flag"
         case .completed:
-            ""
+            "checkmark"
+        }
+    }
+    var categoryColor: UIColor {
+        switch self {
+        case .today:
+            UIColor.systemBlue
+        case .upComing:
+            UIColor.systemRed
+        case .whole:
+            UIColor.systemGray2
+        case .flag:
+            UIColor.systemOrange
+        case .completed:
+            UIColor.systemGray
         }
     }
 }

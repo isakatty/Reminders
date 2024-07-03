@@ -22,6 +22,13 @@ final class ReminderCategoryViewController: BaseViewController {
         btn.addTarget(self, action: #selector(tempTapped), for: .touchUpInside)
         return btn
     }()
+    private lazy var collectionView: UICollectionView = {
+        let collection = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
+        collection.delegate = self
+        collection.dataSource = self
+        collection.register(ReminderCategoryCell.self, forCellWithReuseIdentifier: ReminderCategoryCell.identifier)
+        return collection
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,14 +44,12 @@ final class ReminderCategoryViewController: BaseViewController {
             target: self,
             action: #selector(addReminderTapped)
         )
-        view.addSubview(tempButton)
+        view.addSubview(collectionView)
     }
     override func configureLayout() {
         let safeArea = view.safeAreaLayoutGuide
-        tempButton.snp.makeConstraints { make in
-            make.center.equalTo(safeArea)
-            make.height.equalTo(40)
-            make.width.equalTo(100)
+        collectionView.snp.makeConstraints { make in
+            make.edges.equalTo(safeArea)
         }
         super.configureLayout()
     }
@@ -55,6 +60,24 @@ final class ReminderCategoryViewController: BaseViewController {
         print(reminders.count)
     }
 
+    private func collectionViewLayout() -> UICollectionViewLayout {
+        // compositional layout
+        // 1. item Size 정의 -> layoutItem에 itemSize로 지정 - 2개의 column으로 구성
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        // 2. groupSize 정의
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1 / 8))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        group.interItemSpacing = .fixed(Constant.Spacing.eight.toCGFloat)
+        // 3. section은 group 사이즈로 정의
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = Constant.Spacing.eight.toCGFloat
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: Constant.Spacing.eight.toCGFloat, bottom: 0, trailing: Constant.Spacing.eight.toCGFloat)
+        
+        return UICollectionViewCompositionalLayout(section: section)
+    }
+    
     @objc private func addReminderTapped() {
         print("하이루")
         let vc = AddReminderViewController(viewTitle: "새로운 할 일")
@@ -67,3 +90,30 @@ final class ReminderCategoryViewController: BaseViewController {
     }
 }
 
+extension ReminderCategoryViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
+        return ReminderCategory.allCases.count
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: ReminderCategoryCell.identifier,
+            for: indexPath
+        ) as? ReminderCategoryCell else { return UICollectionViewCell() }
+        let cellInfo = ReminderCategory.allCases[indexPath.row]
+        print(cellInfo.categoryColor, indexPath.row, "이건 cellforRowAt")
+        cell.configureUI(
+            image: UIImage(systemName: cellInfo.categoryImgStr),
+            imageTintColor: cellInfo.categoryColor,
+            titleText: cellInfo.toString,
+            countText: "10"
+        )
+        return cell
+    }
+}
