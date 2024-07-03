@@ -10,6 +10,8 @@ import UIKit
 import RealmSwift
 
 final class AddReminderViewController: BaseViewController {
+    weak var fetchReminderDelegate: ReminderFetchProtocol?
+    
     private var canAdd: Bool = false
     private var newReminder = Reminder(title: "", content: "", date: nil)
     private lazy var reminderTableView: UITableView = {
@@ -64,20 +66,14 @@ final class AddReminderViewController: BaseViewController {
         dismiss(animated: true)
     }
     @objc private func addButtonTapped() {
-        print("Realm 저장")
         let realm = try! Realm()
         
-        do {
-            try? realm.write({
-                realm.add(newReminder)
-                print("Realm 저장")
-                dismiss(animated: true)
-            })
-        } catch {
-            showAlert(title: "저장 안됨", message: "엥", ok: "엥쓰붸리ㅣ") {
-                
-            }
-        }
+        try? realm.write({
+            realm.add(newReminder)
+            print("Realm 저장")
+        })
+        fetchReminderDelegate?.fetchReminders(with: realm.objects(Reminder.self))
+        dismiss(animated: true)
     }
 }
 extension AddReminderViewController

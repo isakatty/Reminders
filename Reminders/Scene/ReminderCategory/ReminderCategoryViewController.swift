@@ -10,18 +10,15 @@ import UIKit
 import RealmSwift
 import SnapKit
 
+protocol ReminderFetchProtocol: AnyObject {
+    func fetchReminders(with data: Results<Reminder>)
+}
+
 final class ReminderCategoryViewController: BaseViewController {
 
     var reminders: Results<Reminder>!
     let realm = try! Realm()
     
-    private lazy var tempButton: UIButton = {
-        let btn = UIButton()
-        btn.setTitle("임시 버튼", for: .normal)
-        btn.backgroundColor = .systemPink
-        btn.addTarget(self, action: #selector(tempTapped), for: .touchUpInside)
-        return btn
-    }()
     private lazy var collectionView: UICollectionView = {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
         collection.delegate = self
@@ -56,7 +53,6 @@ final class ReminderCategoryViewController: BaseViewController {
     private func fetchData() {
         // Realm 데이터 저장
         reminders = realm.objects(Reminder.self)
-        tempButton.setTitle(String(reminders.count), for: .normal)
         print(reminders.count)
     }
 
@@ -81,15 +77,11 @@ final class ReminderCategoryViewController: BaseViewController {
     @objc private func addReminderTapped() {
         print("하이루")
         let vc = AddReminderViewController(viewTitle: "새로운 할 일")
+        vc.fetchReminderDelegate = self
         let navi = UINavigationController(rootViewController: vc)
         navigationController?.present(navi, animated: true)
     }
-    @objc private func tempTapped() {
-        let vc = ReminderListViewController(reminders: reminders)
-        navigationController?.pushViewController(vc, animated: true)
-    }
 }
-
 extension ReminderCategoryViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(
         _ collectionView: UICollectionView,
@@ -107,13 +99,24 @@ extension ReminderCategoryViewController: UICollectionViewDelegate, UICollection
             for: indexPath
         ) as? ReminderCategoryCell else { return UICollectionViewCell() }
         let cellInfo = ReminderCategory.allCases[indexPath.row]
-        print(cellInfo.categoryColor, indexPath.row, "이건 cellforRowAt")
         cell.configureUI(
             image: UIImage(systemName: cellInfo.categoryImgStr),
             imageTintColor: cellInfo.categoryColor,
             titleText: cellInfo.toString,
-            countText: "10"
+            countText: String(reminders.count)
         )
         return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cellInfo = ReminderCategory.allCases[indexPath.row]
+        // 필터된 Reminders에 대한 데이터가 들어가야함
+        let vc = ReminderListViewController(reminders: reminders, viewType: cellInfo)
+        navigationController?.pushViewController(vc, animated: true)
+    }
+}
+extension ReminderCategoryViewController: ReminderFetchProtocol {
+    func fetchReminders(with data: Results<Reminder>) {
+        reminders = data
+        collectionView.reloadData()
     }
 }

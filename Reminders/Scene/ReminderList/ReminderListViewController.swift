@@ -11,6 +11,7 @@ import RealmSwift
 
 final class ReminderListViewController: BaseViewController {
     var reminders: Results<Reminder>
+    var viewType: ReminderCategory
     
     private lazy var reminderTableView: UITableView = {
         let table = UITableView()
@@ -24,14 +25,16 @@ final class ReminderListViewController: BaseViewController {
         return table
     }()
     
-    init(reminders: Results<Reminder>) {
+    init(reminders: Results<Reminder>, viewType: ReminderCategory) {
         self.reminders = reminders
-        
-        super.init(viewTitle: ReminderCategory.whole.toString)
+        self.viewType = viewType
+        super.init(viewTitle: viewType.toString)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationController?.navigationBar.largeTitleTextAttributes = [.foregroundColor: viewType.categoryColor.cgColor]
     }
     
     override func configureHierarchy() {
@@ -45,7 +48,6 @@ final class ReminderListViewController: BaseViewController {
         }
     }
     override func configureView() {
-        
     }
 }
 
@@ -67,7 +69,6 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
         ) as? ReminderTableViewCell else { return UITableViewCell() }
         
         let reminder = reminders[indexPath.row]
-//        cell.backgroundColor = .yellow
         cell.configureUI(title: reminder.title, content: reminder.content, date: reminder.date?.description)
         return cell
     }
