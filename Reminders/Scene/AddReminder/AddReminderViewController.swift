@@ -9,11 +9,16 @@ import UIKit
 
 import RealmSwift
 
+protocol PassDateProtocol: AnyObject {
+    func passDate(_ date: Date)
+}
+
 final class AddReminderViewController: BaseViewController {
     weak var fetchReminderDelegate: ReminderFetchProtocol?
     
     private var canAdd: Bool = false
     private var newReminder = Reminder(title: "", content: "", date: nil)
+    private var changedDate: String = ""
     private lazy var reminderTableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
         table.delegate = self
@@ -76,6 +81,21 @@ final class AddReminderViewController: BaseViewController {
         dismiss(animated: true)
     }
 }
+extension AddReminderViewController: PassDateProtocol {
+    func passDate(_ date: Date) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.timeZone = .current
+        dateFormatter.dateFormat = "yyyy.MM.dd EEEE"
+        changedDate = dateFormatter.string(from: date)
+        
+        // 저장은 Date - 보여주는 형태는 변환된 String
+        newReminder.date = date
+        let indexSet = IndexSet(integer: 1)
+        reminderTableView.reloadSections(indexSet, with: .automatic)
+    }
+}
+
 extension AddReminderViewController
 : UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -107,12 +127,10 @@ extension AddReminderViewController
                 
                 canAdd = !canAdd
                 navigationItem.rightBarButtonItem?.isEnabled = canAdd
-                print(title, content)
+//                print(title, content)
                 newReminder.title = title
                 newReminder.content = content
-                newReminder.date = nil
             }
-            
             return cell
         case .tag, .addImage, .dueDate, .priority:
             guard let cell = tableView.dequeueReusableCell(
@@ -121,7 +139,8 @@ extension AddReminderViewController
             ) as? AddReminderBasicCell else { return UITableViewCell() }
             
             cell.configureUI(
-                labelTitle: AddReminderSection.allCases[indexPath.section].toTitle
+                labelTitle: AddReminderSection.allCases[indexPath.section].toTitle,
+                content: changedDate
             )
             return cell
         }
@@ -143,6 +162,20 @@ extension AddReminderViewController
             return UITableView.automaticDimension
         default:
             return 40
+        }
+    }
+    func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath
+    ) {
+        let section = AddReminderSection.allCases[indexPath.section]
+        switch section {
+        case .dueDate:
+            let vc = AddReminderDateViewController(viewTitle: "마감 날짜")
+            vc.dateDelegate = self
+            navigationController?.pushViewController(vc, animated: true)
+        default:
+            print("아직이용")
         }
     }
 }

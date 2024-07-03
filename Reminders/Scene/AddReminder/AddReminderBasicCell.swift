@@ -14,6 +14,13 @@ final class AddReminderBasicCell: BaseTableViewCell {
         label.textColor = Constant.Color.black
         return label
     }()
+    private let contentLabel: UILabel = {
+        let label = UILabel()
+        label.font = Constant.Font.regular14
+        label.textColor = Constant.Color.darkGray
+        return label
+    }()
+    
     private let chevronImgView: UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFit
@@ -23,25 +30,30 @@ final class AddReminderBasicCell: BaseTableViewCell {
     }()
     
     override func configureHierarchy() {
-        [titleLabel, chevronImgView]
+        [titleLabel, contentLabel, chevronImgView]
             .forEach { contentView.addSubview($0) }
     }
     override func configureLayout() {
         titleLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().inset(Constant.Spacing.twelve.toCGFloat)
-            make.width.equalToSuperview().multipliedBy(0.5)
+            make.height.equalTo(20)
+        }
+        contentLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.greaterThanOrEqualTo(titleLabel.snp.trailing)
+            make.trailing.equalTo(chevronImgView.snp.leading).inset(-Constant.Spacing.eight.toCGFloat)
             make.height.equalTo(20)
         }
         chevronImgView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(Constant.Spacing.twelve.toCGFloat)
             make.centerY.equalToSuperview()
-            make.height.width.equalTo(20)
-            make.leading.greaterThanOrEqualTo(titleLabel.snp.trailing)
+            make.height.width.equalTo(17)
             
         }
     }
-    func configureUI(labelTitle: String) {
+    func configureUI(labelTitle: String, content: String?) {
         titleLabel.text = labelTitle
+        contentLabel.text = content
     }
 }

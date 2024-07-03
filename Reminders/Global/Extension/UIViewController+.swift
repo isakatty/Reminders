@@ -52,4 +52,17 @@ extension UIViewController {
         alert.addAction(cancel)
         present(alert, animated: true)
     }
+    
+    func configureBackNavi(action: Selector?) {
+        if let action {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: action)
+        } else {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.left"), style: .plain, target: self, action: #selector(backBtnTapped))
+        }
+        navigationController?
+            .interactivePopGestureRecognizer?.delegate = nil
+    }
+    @objc func backBtnTapped() {
+        navigationController?.popViewController(animated: true)
+    }
 }

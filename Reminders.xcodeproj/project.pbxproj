@@ -31,6 +31,7 @@
 		C9DF62BD2C34C30C00294B4B /* AddReminderSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62BC2C34C30C00294B4B /* AddReminderSection.swift */; };
 		C9DF62C52C354F6200294B4B /* ReminderCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62C42C354F6200294B4B /* ReminderCategoryCell.swift */; };
 		C9DF62C72C354F7800294B4B /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62C62C354F7800294B4B /* BaseCollectionViewCell.swift */; };
+		C9DF62CB2C35991F00294B4B /* AddReminderDateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62CA2C35991F00294B4B /* AddReminderDateViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		C9DF62BC2C34C30C00294B4B /* AddReminderSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReminderSection.swift; sourceTree = "<group>"; };
 		C9DF62C42C354F6200294B4B /* ReminderCategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCategoryCell.swift; sourceTree = "<group>"; };
 		C9DF62C62C354F7800294B4B /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
+		C9DF62CA2C35991F00294B4B /* AddReminderDateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReminderDateViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +159,7 @@
 				C9DF62992C34153300294B4B /* AddReminderViewController.swift */,
 				C9DF629E2C341A9100294B4B /* AddReminderTextFieldTableViewCell.swift */,
 				C9DF62B12C344F5C00294B4B /* AddReminderBasicCell.swift */,
+				C9DF62CA2C35991F00294B4B /* AddReminderDateViewController.swift */,
 			);
 			path = AddReminder;
 			sourceTree = "<group>";
@@ -299,6 +302,7 @@
 				C9DF62A32C341AF000294B4B /* ReusableIdentifierProtocol.swift in Sources */,
 				C9DF62952C3401E600294B4B /* BaseViewController.swift in Sources */,
 				C9DF62C72C354F7800294B4B /* BaseCollectionViewCell.swift in Sources */,
+				C9DF62CB2C35991F00294B4B /* AddReminderDateViewController.swift in Sources */,
 				C951C2022C33FBD00057BD15 /* AppDelegate.swift in Sources */,
 				C9DF62B22C344F5C00294B4B /* AddReminderBasicCell.swift in Sources */,
 				C9DF62BD2C34C30C00294B4B /* AddReminderSection.swift in Sources */,
