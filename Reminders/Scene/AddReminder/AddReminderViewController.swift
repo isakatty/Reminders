@@ -7,30 +7,8 @@
 
 import UIKit
 
-enum AddReminderSection: CaseIterable {
-    case todo
-    case dueDate
-    case tag
-    case priority
-    case addImage
-    
-    var toTitle: String {
-        switch self {
-        case .todo:
-            "할 일"
-        case .dueDate:
-            "마감일"
-        case .tag:
-            "태그"
-        case .priority:
-            "우선 순위"
-        case .addImage:
-            "이미지 추가"
-        }
-    }
-}
-
 final class AddReminderViewController: BaseViewController {
+    private var canAdd: Bool = false
     private lazy var reminderTableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
         table.delegate = self
@@ -53,6 +31,7 @@ final class AddReminderViewController: BaseViewController {
         super.viewDidLoad()
         
         configureNavi()
+        print(navigationItem.rightBarButtonItem?.isEnabled)
     }
     
     override func configureHierarchy() {
@@ -74,14 +53,16 @@ final class AddReminderViewController: BaseViewController {
         )
         configureNaviRightButton(
             title: "추가",
-            buttonAction: #selector(addButtonTapped)
+            buttonAction: #selector(addButtonTapped),
+            enable: canAdd
         )
     }
     @objc private func cancelButtonTapped() {
         print("Tapped")
     }
     @objc private func addButtonTapped() {
-        print("Tapped")
+        print("Realm 저장")
+         
     }
 }
 extension AddReminderViewController
@@ -106,6 +87,17 @@ extension AddReminderViewController
                 for: indexPath
             ) as? AddReminderTextFieldTableViewCell
             else { return UITableViewCell() }
+            
+            // title
+            cell.contentsCallBack = { [weak self] title, content in
+                guard let self else { return }
+                guard let title = title,
+                      !title.isEmpty else { return }
+                
+                canAdd = !canAdd
+                navigationItem.rightBarButtonItem?.isEnabled = canAdd
+                print(title, content)
+            }
             
             return cell
         case .tag, .addImage, .dueDate, .priority:

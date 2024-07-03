@@ -28,6 +28,7 @@
 		C9DF62B62C34B54600294B4B /* ReminderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62B52C34B54600294B4B /* ReminderTableViewCell.swift */; };
 		C9DF62B82C34C10400294B4B /* Reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62B72C34C10400294B4B /* Reminder.swift */; };
 		C9DF62BB2C34C1A300294B4B /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C9DF62BA2C34C1A300294B4B /* RealmSwift */; };
+		C9DF62BD2C34C30C00294B4B /* AddReminderSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62BC2C34C30C00294B4B /* AddReminderSection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		C9DF62B32C34B49F00294B4B /* ReminderListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderListViewController.swift; sourceTree = "<group>"; };
 		C9DF62B52C34B54600294B4B /* ReminderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderTableViewCell.swift; sourceTree = "<group>"; };
 		C9DF62B72C34C10400294B4B /* Reminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reminder.swift; sourceTree = "<group>"; };
+		C9DF62BC2C34C30C00294B4B /* AddReminderSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReminderSection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +179,7 @@
 			children = (
 				C9DF62972C34027500294B4B /* ReminderCategory.swift */,
 				C9DF62B72C34C10400294B4B /* Reminder.swift */,
+				C9DF62BC2C34C30C00294B4B /* AddReminderSection.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 				C9DF62952C3401E600294B4B /* BaseViewController.swift in Sources */,
 				C951C2022C33FBD00057BD15 /* AppDelegate.swift in Sources */,
 				C9DF62B22C344F5C00294B4B /* AddReminderBasicCell.swift in Sources */,
+				C9DF62BD2C34C30C00294B4B /* AddReminderSection.swift in Sources */,
 				C9DF62A12C341ABD00294B4B /* BaseTableViewCell.swift in Sources */,
 				C9DF62982C34027500294B4B /* ReminderCategory.swift in Sources */,
 				C9DF62AB2C341D1700294B4B /* CustomTextField.swift in Sources */,

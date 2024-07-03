@@ -8,13 +8,15 @@
 import UIKit
 
 final class AddReminderTextFieldTableViewCell: BaseTableViewCell {
-    
+    var contentsCallBack: ((String?, String?) -> Void)?
+    let textViewPlaceholer: String = "내용을 입력해주세요."
     private lazy var titleTextField = makeTextField(placeholder: "제목")
     private lazy var contentTextView: UITextView = {
         let view = UITextView()
         view.textAlignment = .left
         view.keyboardType = .default
-        view.text = "머라고요?"
+        view.text = textViewPlaceholer
+        view.textColor = Constant.Color.lightGray
         view.delegate = self
         return view
     }()
@@ -42,7 +44,7 @@ final class AddReminderTextFieldTableViewCell: BaseTableViewCell {
         }
         contentTextView.snp.makeConstraints { make in
             make.top.equalTo(separateBar.snp.bottom).inset(-Constant.Spacing.four.toCGFloat)
-            make.leading.trailing.equalTo(titleTextField)
+            make.leading.trailing.equalToSuperview().inset(Constant.Spacing.eight.toCGFloat)
             make.height.greaterThanOrEqualTo(100)
             make.bottom.equalToSuperview().inset(10)
         }
@@ -59,5 +61,27 @@ extension AddReminderTextFieldTableViewCell {
     }
 }
 extension AddReminderTextFieldTableViewCell: UITextViewDelegate {
-    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == textViewPlaceholer {
+            contentTextView.textColor = Constant.Color.lightGray
+            contentTextView.text = ""
+        }
+    }
+    // 바뀌는 도중에
+    func textViewDidChange(_ textView: UITextView) {
+        if textView.text.trimmingCharacters(in: .whitespaces).isEmpty {
+            contentTextView.textColor = Constant.Color.lightGray
+            contentTextView.text = textViewPlaceholer
+        } else {
+            contentTextView.textColor = Constant.Color.black
+        }
+    }
+    // editing 끝나고
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.trimmingCharacters(in: .whitespaces).isEmpty {
+            textView.text = textViewPlaceholer
+            textView.textColor = Constant.Color.lightGray
+        }
+        contentsCallBack?(titleTextField.text, textView.text)
+    }
 }
