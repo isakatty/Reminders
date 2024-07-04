@@ -16,6 +16,7 @@ protocol PassDateProtocol: AnyObject {
 final class AddReminderViewController: BaseViewController {
     weak var fetchReminderDelegate: ReminderFetchProtocol?
     
+    private let realm = try! Realm()
     private var canAdd: Bool = false
     private var newReminder = Reminder(title: "", content: "", date: nil)
     private var changedDate: String = ""
@@ -71,8 +72,6 @@ final class AddReminderViewController: BaseViewController {
         dismiss(animated: true)
     }
     @objc private func addButtonTapped() {
-        let realm = try! Realm()
-        
         try? realm.write({
             realm.add(newReminder)
             print("Realm 저장")

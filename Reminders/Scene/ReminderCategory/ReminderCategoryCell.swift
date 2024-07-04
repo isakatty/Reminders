@@ -11,8 +11,6 @@ final class ReminderCategoryCell: BaseCollectionViewCell {
     private let containView = UIView()
     private let circleImage: UIImageView = {
         let image = UIImageView()
-        image.contentMode = .scaleAspectFill
-        image.clipsToBounds = true
         image.tintColor = Constant.Color.white
         return image
     }()
@@ -57,6 +55,8 @@ final class ReminderCategoryCell: BaseCollectionViewCell {
 //        print(imageTintColor)
         circleImage.image = image?.withRenderingMode(.alwaysTemplate)
         circleImage.backgroundColor = .clear
+        // 객체 초기화는 한번만 불리게 되는데, prepareForReuse를 통해서 tintColor를 clear를 주고 있었으니 투명하게 변해서 보이지 않는 문제가 있었던 것. clear를 주고 tint를 다시 해주고 싶다면 여기서 tint 값을 다시 주면 되지만, 굳이여기서 ?
+//        circleImage.tintColor = Constant.Color.white
         containView.backgroundColor = imageTintColor
         titleLabel.text = titleText
         countLabel.text = countText
@@ -72,7 +72,8 @@ final class ReminderCategoryCell: BaseCollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        print(#function)
         
-        circleImage.tintColor = .clear
+        circleImage.tintColor = Constant.Color.white
     }
 }

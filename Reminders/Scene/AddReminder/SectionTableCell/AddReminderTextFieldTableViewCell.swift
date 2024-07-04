@@ -67,13 +67,14 @@ extension AddReminderTextFieldTableViewCell: UITextViewDelegate {
             contentTextView.text = ""
         }
     }
-    // 바뀌는 도중에
+    // 바뀌는 도중에 -> 값 전달
     func textViewDidChange(_ textView: UITextView) {
         if textView.text.trimmingCharacters(in: .whitespaces).isEmpty {
             contentTextView.textColor = Constant.Color.lightGray
             contentTextView.text = textViewPlaceholer
         } else {
             contentTextView.textColor = Constant.Color.black
+            contentsCallBack?(titleTextField.text, textView.text)
         }
     }
     // editing 끝나고
@@ -82,6 +83,5 @@ extension AddReminderTextFieldTableViewCell: UITextViewDelegate {
             textView.text = textViewPlaceholer
             textView.textColor = Constant.Color.lightGray
         }
-        contentsCallBack?(titleTextField.text, textView.text)
     }
 }
