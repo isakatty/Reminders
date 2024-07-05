@@ -15,6 +15,7 @@
 		C986A79F2C37D2A1000D9B07 /* AddReminderTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C986A79E2C37D2A1000D9B07 /* AddReminderTagViewController.swift */; };
 		C986A7A12C37D515000D9B07 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C986A7A02C37D515000D9B07 /* String+.swift */; };
 		C986A7A52C37EE87000D9B07 /* AddReminderImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C986A7A42C37EE87000D9B07 /* AddReminderImageViewController.swift */; };
+		C986A7A72C380126000D9B07 /* ReminderRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C986A7A62C380126000D9B07 /* ReminderRepository.swift */; };
 		C9D3D72F2C36937700D07682 /* AddReminderPriorityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D3D72E2C36937700D07682 /* AddReminderPriorityViewController.swift */; };
 		C9D3D7332C36967500D07682 /* Priority.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D3D7322C36967500D07682 /* Priority.swift */; };
 		C9DF62952C3401E600294B4B /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DF62942C3401E600294B4B /* BaseViewController.swift */; };
@@ -50,6 +51,7 @@
 		C986A79E2C37D2A1000D9B07 /* AddReminderTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReminderTagViewController.swift; sourceTree = "<group>"; };
 		C986A7A02C37D515000D9B07 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		C986A7A42C37EE87000D9B07 /* AddReminderImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReminderImageViewController.swift; sourceTree = "<group>"; };
+		C986A7A62C380126000D9B07 /* ReminderRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderRepository.swift; sourceTree = "<group>"; };
 		C9D3D72E2C36937700D07682 /* AddReminderPriorityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReminderPriorityViewController.swift; sourceTree = "<group>"; };
 		C9D3D7322C36967500D07682 /* Priority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Priority.swift; sourceTree = "<group>"; };
 		C9DF62942C3401E600294B4B /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
@@ -111,6 +113,14 @@
 			path = Reminders;
 			sourceTree = "<group>";
 		};
+		C986A7A82C380387000D9B07 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				C986A7A62C380126000D9B07 /* ReminderRepository.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
 		C9DF628C2C3400AA00294B4B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -124,6 +134,7 @@
 		C9DF628D2C34010B00294B4B /* Global */ = {
 			isa = PBXGroup;
 			children = (
+				C986A7A82C380387000D9B07 /* Repository */,
 				C9DF62A92C341D0900294B4B /* CustomView */,
 				C9DF62A42C341B0B00294B4B /* Protocol */,
 				C9DF629B2C34166C00294B4B /* Extension */,
@@ -328,6 +339,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9DF629D2C34167500294B4B /* UIViewController+.swift in Sources */,
+				C986A7A72C380126000D9B07 /* ReminderRepository.swift in Sources */,
 				C951C2062C33FBD00057BD15 /* ReminderCategoryViewController.swift in Sources */,
 				C9DF62A82C341B4E00294B4B /* UITableViewCell+.swift in Sources */,
 				C986A79F2C37D2A1000D9B07 /* AddReminderTagViewController.swift in Sources */,
