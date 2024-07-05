@@ -13,6 +13,7 @@ protocol PassDateProtocol: AnyObject {
     func passDate(_ date: Date)
     func passPriority(_ priority: Priority)
     func passTags(_ text: String?)
+    func passImage(_ image: UIImage?)
 }
 
 final class AddReminderViewController: BaseViewController {
@@ -84,6 +85,16 @@ final class AddReminderViewController: BaseViewController {
     }
 }
 extension AddReminderViewController: PassDateProtocol {
+    func passImage(_ image: UIImage?) {
+        guard let image else {
+            print("image 없음 - 저장될 필요 없음")
+            return
+        }
+        print(image)
+        // 이미지
+        reloadSection(indexSet: 3)
+    }
+    
     func passTags(_ text: String?) {
         guard let text else {
             changedSections[1] = nil
@@ -204,6 +215,10 @@ extension AddReminderViewController
         case .tag:
             let vc = AddReminderTagViewController(viewTitle: section.toTitle)
             vc.tagDelegate = self
+            navigationController?.pushViewController(vc, animated: true)
+        case .addImage:
+            let vc = AddReminderImageViewController(viewTitle: section.toTitle)
+            vc.imageDelegate = self
             navigationController?.pushViewController(vc, animated: true)
         default:
             print("아직이용")
