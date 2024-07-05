@@ -12,6 +12,7 @@ import RealmSwift
 protocol PassDateProtocol: AnyObject {
     func passDate(_ date: Date)
     func passPriority(_ priority: Priority)
+    func passTags(_ text: String?)
 }
 
 final class AddReminderViewController: BaseViewController {
@@ -21,7 +22,7 @@ final class AddReminderViewController: BaseViewController {
     private var canAdd: Bool = false
     private var newReminder = Reminder(title: "", content: "", date: nil)
     private var changedDate: String = ""
-    private var changedSections: [String] = .init(repeating: "", count: 4)
+    private var changedSections: [String?] = .init(repeating: "", count: 4)
     private lazy var reminderTableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
         table.delegate = self
@@ -83,6 +84,16 @@ final class AddReminderViewController: BaseViewController {
     }
 }
 extension AddReminderViewController: PassDateProtocol {
+    func passTags(_ text: String?) {
+        guard let text else {
+            changedSections[1] = nil
+            return
+        }
+        print(text.addHashTag())
+        changedSections[1] = text.addHashTag()
+        reloadSection(indexSet: 1)
+    }
+    
     func passPriority(_ priority: Priority) {
         print(priority)
         changedSections[2] = priority.toString
@@ -182,14 +193,18 @@ extension AddReminderViewController
         let section = AddReminderSection.allCases[indexPath.section]
         switch section {
         case .dueDate:
-            let vc = AddReminderDateViewController(viewTitle: "마감 날짜")
+            let vc = AddReminderDateViewController(viewTitle: section.toTitle)
             vc.dateDelegate = self
             navigationController?.pushViewController(vc, animated: true)
         case .priority:
-            let vc = AddReminderPriorityViewController(viewTitle: "우선순위")
+            let vc = AddReminderPriorityViewController(viewTitle: section.toTitle)
             vc.priorityDelegate = self
             vc.sheetPresentationController?.detents = [.medium()]
             present(vc, animated: true)
+        case .tag:
+            let vc = AddReminderTagViewController(viewTitle: section.toTitle)
+            vc.tagDelegate = self
+            navigationController?.pushViewController(vc, animated: true)
         default:
             print("아직이용")
         }
