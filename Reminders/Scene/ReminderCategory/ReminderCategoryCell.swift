@@ -34,7 +34,6 @@ final class ReminderCategoryCell: BaseCollectionViewCell {
             make.edges.equalToSuperview().inset(5)
         }
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(containView.snp.bottom).offset(Constant.Spacing.sixteen.toCGFloat)
             make.leading.trailing.equalToSuperview().inset(Constant.Spacing.twelve.toCGFloat)
             make.bottom.equalToSuperview().inset(Constant.Spacing.eight.toCGFloat)
         }

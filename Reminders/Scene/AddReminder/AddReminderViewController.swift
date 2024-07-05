@@ -11,6 +11,7 @@ import RealmSwift
 
 protocol PassDateProtocol: AnyObject {
     func passDate(_ date: Date)
+    func passPriority(_ priority: Priority)
 }
 
 final class AddReminderViewController: BaseViewController {
@@ -20,6 +21,7 @@ final class AddReminderViewController: BaseViewController {
     private var canAdd: Bool = false
     private var newReminder = Reminder(title: "", content: "", date: nil)
     private var changedDate: String = ""
+    private var changedSections: [String] = .init(repeating: "", count: 4)
     private lazy var reminderTableView: UITableView = {
         let table = UITableView(frame: .zero, style: .insetGrouped)
         table.delegate = self
@@ -81,16 +83,27 @@ final class AddReminderViewController: BaseViewController {
     }
 }
 extension AddReminderViewController: PassDateProtocol {
+    func passPriority(_ priority: Priority) {
+        print(priority)
+        changedSections[2] = priority.toString
+        reloadSection(indexSet: 2)
+    }
+    
     func passDate(_ date: Date) {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ko_KR")
         dateFormatter.timeZone = .current
         dateFormatter.dateFormat = "yyyy.MM.dd EEEE"
         changedDate = dateFormatter.string(from: date)
+        print(changedDate)
+        changedSections[0] = changedDate
         
         // 저장은 Date - 보여주는 형태는 변환된 String
         newReminder.date = date
-        let indexSet = IndexSet(integer: 1)
+        reloadSection(indexSet: 0)
+    }
+    private func reloadSection(indexSet: Int) {
+        let indexSet = IndexSet(integer: indexSet + 1)
         reminderTableView.reloadSections(indexSet, with: .automatic)
     }
 }
@@ -136,10 +149,9 @@ extension AddReminderViewController
                 withIdentifier: AddReminderBasicCell.identifier,
                 for: indexPath
             ) as? AddReminderBasicCell else { return UITableViewCell() }
-            
             cell.configureUI(
                 labelTitle: AddReminderSection.allCases[indexPath.section].toTitle,
-                content: changedDate
+                content: changedSections[indexPath.section - 1]
             )
             return cell
         }
@@ -173,6 +185,11 @@ extension AddReminderViewController
             let vc = AddReminderDateViewController(viewTitle: "마감 날짜")
             vc.dateDelegate = self
             navigationController?.pushViewController(vc, animated: true)
+        case .priority:
+            let vc = AddReminderPriorityViewController(viewTitle: "우선순위")
+            vc.priorityDelegate = self
+            vc.sheetPresentationController?.detents = [.medium()]
+            present(vc, animated: true)
         default:
             print("아직이용")
         }

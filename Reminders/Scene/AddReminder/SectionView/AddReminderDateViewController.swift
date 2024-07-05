@@ -42,7 +42,6 @@ final class AddReminderDateViewController: BaseViewController {
         date = datePicker.date
     }
     @objc private func customBackTapped() {
-        print("gkdlfn")
         dateDelegate?.passDate(date)
         navigationController?.popViewController(animated: true)
     }
