@@ -14,4 +14,17 @@ extension String {
         hashTags = Array(Set(hashTags))
         return hashTags.joined(separator: " ")
     }
+    
+    func toPriority() -> Priority {
+        switch self {
+        case "높음":
+            return .primary
+        case "중간":
+            return .secondary
+        case "낮음":
+            return .tertiary
+        default:
+            return .none
+        }
+    }
 }

@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol ReminderFinishedProtocol: AnyObject {
+    func finishedReminder(_ isDone: Bool, index: Int)
+}
+
 final class ReminderListViewController: BaseViewController {
     var reminders: [Reminder]
     var viewType: ReminderCategory
+    
+    let repository = ReminderRepository()
     
     private lazy var reminderTableView: UITableView = {
         let table = UITableView()
@@ -49,6 +55,19 @@ final class ReminderListViewController: BaseViewController {
     }
 }
 
+extension ReminderListViewController: ReminderFinishedProtocol {
+    func finishedReminder(_ isDone: Bool, index: Int) {
+        print(isDone, index, #function)
+        // isDone만 받아서는 안되지 않나 .. ? id를 가져와야하는데
+        // 데이터 update
+        do {
+            try repository.updateReminder(reminders[index])
+        } catch {
+            print("업데이트 실패")
+        }
+    }
+}
+
 extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(
         _ tableView: UITableView,
@@ -68,12 +87,16 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
         
         let reminder = reminders[indexPath.row]
         cell.configureUI(
-//            priority: reminder.priority,
+            btnTag: indexPath.row,
+            priority: reminder.priority,
             title: reminder.title,
             content: reminder.content,
             date: reminder.date,
-            tag: reminder.tag?.addHashTag()
+            tag: reminder.tag?.addHashTag(),
+            isDone: reminder.idDone
         )
+        cell.reminderDelegate = self
+        
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

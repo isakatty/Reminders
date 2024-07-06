@@ -8,14 +8,17 @@
 import UIKit
 
 final class ReminderTableViewCell: BaseTableViewCell {
+    weak var reminderDelegate: ReminderFinishedProtocol?
+    
     private var alreadyDid: Bool = false
+    private var index: Int = 0
     private lazy var checkBtn: UIButton = {
         var config = UIButton.Configuration.plain()
         config.baseBackgroundColor = .clear
-        config.image = UIImage(systemName: alreadyDid ? "circle.fill" : "circle")
         config.imagePadding = 8
         config.imagePlacement = .leading
         let btn = UIButton(configuration: config)
+        btn.tintColor = Constant.Color.lightGray
         btn.addTarget(self, action: #selector(checkBtnTapped), for: .touchUpInside)
         return btn
     }()
@@ -110,20 +113,26 @@ final class ReminderTableViewCell: BaseTableViewCell {
     }
     
     func configureUI(
-//        priority: UIImage?,
+        btnTag: Int,
+        priority: String,
         title: String,
         content: String?,
         date: Date?,
-        tag: String?
+        tag: String?,
+        isDone: Bool
     ) {
-        priorityImgView.image = Priority.primary.toImage
+        checkBtn.tag = btnTag
+        priorityImgView.image = priority.toPriority().toImage
         reminderTitleLabel.text = title
         reminderContentLabel.text = content
         dueDateLabel.text = date?.changeDateFormat()
         tagLabel.text = tag
-        
+        index = checkBtn.tag
+        alreadyDid = isDone
+        configBtn(checked: alreadyDid)
         updateConstraints()
     }
+    
     private func makeLabel(
         textSize: UIFont,
         textColor: UIColor,
@@ -144,6 +153,8 @@ final class ReminderTableViewCell: BaseTableViewCell {
     @objc private func checkBtnTapped() {
         alreadyDid = !alreadyDid
         configBtn(checked: alreadyDid)
+        // bool 값 전달 -> Delegate를 통해서
+        reminderDelegate?.finishedReminder(alreadyDid, index: index)
     }
 }
 
