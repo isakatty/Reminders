@@ -68,9 +68,11 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
         
         let reminder = reminders[indexPath.row]
         cell.configureUI(
+//            priority: reminder.priority,
             title: reminder.title,
             content: reminder.content,
-            date: reminder.date.description
+            date: reminder.date,
+            tag: reminder.tag?.addHashTag()
         )
         return cell
     }

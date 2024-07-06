@@ -114,11 +114,7 @@ extension AddReminderViewController: PassDateProtocol {
     }
     
     func passDate(_ date: Date) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "ko_KR")
-        dateFormatter.timeZone = .current
-        dateFormatter.dateFormat = "yyyy.MM.dd EEEE"
-        changedDate = dateFormatter.string(from: date)
+        changedDate = date.changeDateFormat()
         print(changedDate)
         changedSections[0] = changedDate
         

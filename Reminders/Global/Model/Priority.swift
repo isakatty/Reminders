@@ -31,7 +31,7 @@ enum Priority: Int, CaseIterable {
         case .tertiary:
             UIImage(systemName: "exclamationmark.3")
         case .none:
-            UIImage(systemName: "xmark")
+            nil
         }
     }
 }
