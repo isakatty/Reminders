@@ -55,4 +55,24 @@ enum ReminderCategory: CaseIterable {
             UIColor.systemGray
         }
     }
+    
+    var sortedReminder: [Reminder] {
+        switch self {
+        case .today:
+            let sorted = ReminderRepository().fetchTodaysReminder()
+            return sorted
+        case .upComing:
+            return ReminderRepository().fetchUpcomingReminder()
+        case .whole:
+            return ReminderRepository().fetchReminders()
+        case .flag:
+            return ReminderRepository().sortReminder(keyPath: "priority")
+        case .completed:
+            let sorted = ReminderRepository().sortReminder(keyPath: "idDone")
+                                .filter { reminder in
+                                    reminder.idDone == true
+                                }
+            return sorted
+        }
+    }
 }

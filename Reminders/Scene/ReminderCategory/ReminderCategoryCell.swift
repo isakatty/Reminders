@@ -71,7 +71,6 @@ final class ReminderCategoryCell: BaseCollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        print(#function)
         
         circleImage.tintColor = Constant.Color.white
     }

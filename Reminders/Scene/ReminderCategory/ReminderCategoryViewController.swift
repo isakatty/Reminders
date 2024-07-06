@@ -33,6 +33,11 @@ final class ReminderCategoryViewController: BaseViewController {
 //        print(realm.configuration.fileURL) // Realm 파일 위치 읽어오기
         fetchData()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        collectionView.reloadData()
+    }
     
     override func configureHierarchy() {
         navigationItem.leftBarButtonItem = .init(
@@ -102,14 +107,15 @@ extension ReminderCategoryViewController: UICollectionViewDelegate, UICollection
             image: UIImage(systemName: cellInfo.categoryImgStr),
             imageTintColor: cellInfo.categoryColor,
             titleText: cellInfo.toString,
-            countText: String(reminders.count)
+            countText: String(cellInfo.sortedReminder.count)
         )
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cellInfo = ReminderCategory.allCases[indexPath.row]
+        let sorted = cellInfo.sortedReminder
         // 필터된 Reminders에 대한 데이터가 들어가야함
-        let vc = ReminderListViewController(reminders: reminders, viewType: cellInfo)
+        let vc = ReminderListViewController(reminders: sorted, viewType: cellInfo)
         navigationController?.pushViewController(vc, animated: true)
     }
 }

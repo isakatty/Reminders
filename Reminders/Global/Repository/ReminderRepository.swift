@@ -28,6 +28,7 @@ protocol ReminderRepositoryProtocol {
     // D
     func deleteReminder(_ reminder: Reminder) throws
     func deleteAllReminder() throws
+    func sortReminder(keyPath: String) -> [Reminder]
 }
 
 final class ReminderRepository: ReminderRepositoryProtocol {
@@ -80,5 +81,36 @@ final class ReminderRepository: ReminderRepositoryProtocol {
             print("realm DB delete Error")
             throw RealmError.invalidDeleteReminders
         }
+    }
+    
+    func sortReminder(keyPath: String) -> [Reminder] {
+        let sortedReminder = realm.objects(Reminder.self).sorted(byKeyPath: keyPath)
+        return Array(sortedReminder)
+    }
+    func fetchTodaysReminder() -> [Reminder] {
+        let start = Calendar.current.startOfDay(for: Date())
+        let end = Calendar.current.date(byAdding: .day, value: 1, to: start) ?? Date()
+        let predicate = NSPredicate(
+            format: "date >= %@ && date < %@",
+            start as NSDate,
+            end as NSDate
+        )
+        let sorted = realm.objects(Reminder.self).filter(predicate)
+        
+        return Array(sorted)
+    }
+    func fetchUpcomingReminder() -> [Reminder] {
+        let start = Calendar.current.startOfDay(for: Date())
+        let end = Calendar.current.date(byAdding: .day, value: 1, to: start) ?? Date()
+        let predicate = NSPredicate(
+            format: "date < %@ || date >= %@",
+            start as NSDate,
+            end as NSDate
+        )
+        let sorted = realm.objects(Reminder.self)
+            .filter(predicate)
+            .filter { $0.idDone == false }
+        
+        return Array(sorted)
     }
 }
