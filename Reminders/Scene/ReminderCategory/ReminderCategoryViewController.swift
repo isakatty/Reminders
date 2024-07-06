@@ -11,13 +11,13 @@ import RealmSwift
 import SnapKit
 
 protocol ReminderFetchProtocol: AnyObject {
-    func fetchReminders(with data: Results<Reminder>)
+    func fetchReminders(with data: [Reminder])
 }
 
 final class ReminderCategoryViewController: BaseViewController {
 
-    var reminders: Results<Reminder>!
-    let realm = try! Realm()
+    let reminderRepository = ReminderRepository()
+    var reminders = [Reminder]()
     
     private lazy var collectionView: UICollectionView = {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
@@ -30,7 +30,7 @@ final class ReminderCategoryViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(realm.configuration.fileURL) // Realm 파일 위치 읽어오기
+//        print(realm.configuration.fileURL) // Realm 파일 위치 읽어오기
         fetchData()
     }
     
@@ -52,8 +52,7 @@ final class ReminderCategoryViewController: BaseViewController {
     }
     private func fetchData() {
         // Realm 데이터 저장
-        reminders = realm.objects(Reminder.self)
-        print(reminders.count)
+        reminders = reminderRepository.fetchReminders()
     }
 
     private func collectionViewLayout() -> UICollectionViewLayout {
@@ -115,7 +114,7 @@ extension ReminderCategoryViewController: UICollectionViewDelegate, UICollection
     }
 }
 extension ReminderCategoryViewController: ReminderFetchProtocol {
-    func fetchReminders(with data: Results<Reminder>) {
+    func fetchReminders(with data: [Reminder]) {
         reminders = data
         collectionView.reloadData()
     }

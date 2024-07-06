@@ -45,6 +45,8 @@ final class ReminderRepository: ReminderRepositoryProtocol {
     }
     
     func fetchReminders() -> [Reminder] {
+        print(realm.configuration.fileURL, "🔥")
+        
         return Array(realm.objects(Reminder.self))
     }
     

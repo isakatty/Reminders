@@ -21,7 +21,6 @@ final class Reminder: Object {
     @Persisted var idDone: Bool
     
     convenience init(
-        id: ObjectId,
         title: String,
         content: String? = nil,
         date: Date,
@@ -30,7 +29,6 @@ final class Reminder: Object {
         imageStr: String? = nil
     ) {
         self.init()
-        self.id = id
         self.title = title
         self.content = content
         self.date = date

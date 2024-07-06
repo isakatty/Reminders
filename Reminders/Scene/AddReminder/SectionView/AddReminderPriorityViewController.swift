@@ -66,6 +66,7 @@ final class AddReminderPriorityViewController: BaseViewController {
         priorityLabel.text = Priority.allCases[prioritySegmented.selectedSegmentIndex].toString
     }
     @objc private func segmentedTapped(_ sender: UISegmentedControl) {
+        // value Changed여야 값이 존재.
         priorityLabel.text = Priority.allCases[sender.selectedSegmentIndex].toString
         priorityDelegate?.passPriority(Priority.allCases[sender.selectedSegmentIndex])
         dismiss(animated: true)

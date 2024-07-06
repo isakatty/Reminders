@@ -7,8 +7,6 @@
 
 import UIKit
 
-import RealmSwift
-
 protocol PassDateProtocol: AnyObject {
     func passDate(_ date: Date)
     func passPriority(_ priority: Priority)
@@ -19,9 +17,9 @@ protocol PassDateProtocol: AnyObject {
 final class AddReminderViewController: BaseViewController {
     weak var fetchReminderDelegate: ReminderFetchProtocol?
     
-    private let realm = try! Realm()
+    private let repository = ReminderRepository()
     private var canAdd: Bool = false
-    private var newReminder = Reminder(title: "", content: "", date: nil)
+    private var newReminder = Reminder(title: "", date: Date(), priority: "")
     private var changedDate: String = ""
     private var changedSections: [String?] = .init(repeating: "", count: 4)
     private lazy var reminderTableView: UITableView = {
@@ -76,12 +74,14 @@ final class AddReminderViewController: BaseViewController {
         dismiss(animated: true)
     }
     @objc private func addButtonTapped() {
-        try? realm.write({
-            realm.add(newReminder)
-            print("Realm 저장")
-        })
-        fetchReminderDelegate?.fetchReminders(with: realm.objects(Reminder.self))
-        dismiss(animated: true)
+        do {
+            // RealmDB에 저장
+            try repository.createReminder(newReminder)
+            fetchReminderDelegate?.fetchReminders(with: repository.fetchReminders())
+            dismiss(animated: true)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
 }
 extension AddReminderViewController: PassDateProtocol {
@@ -100,6 +100,7 @@ extension AddReminderViewController: PassDateProtocol {
             changedSections[1] = nil
             return
         }
+        newReminder.tag = text
         print(text.addHashTag())
         changedSections[1] = text.addHashTag()
         reloadSection(indexSet: 1)
@@ -107,6 +108,7 @@ extension AddReminderViewController: PassDateProtocol {
     
     func passPriority(_ priority: Priority) {
         print(priority)
+        newReminder.priority = priority.toString
         changedSections[2] = priority.toString
         reloadSection(indexSet: 2)
     }
@@ -166,7 +168,7 @@ extension AddReminderViewController
                 newReminder.content = content
             }
             return cell
-        case .tag, .addImage, .dueDate, .priority:
+        case .tag, .addImage, .dueDate:
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: AddReminderBasicCell.identifier,
                 for: indexPath
@@ -175,6 +177,23 @@ extension AddReminderViewController
                 labelTitle: AddReminderSection.allCases[indexPath.section].toTitle,
                 content: changedSections[indexPath.section - 1]
             )
+            return cell
+        case .priority:
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: AddReminderBasicCell.identifier,
+                for: indexPath
+            ) as? AddReminderBasicCell else { return UITableViewCell() }
+            if changedSections[indexPath.section - 1] == "" {
+                cell.configureUI(
+                    labelTitle: AddReminderSection.allCases[indexPath.section].toTitle,
+                    content: "없음"
+                )
+            } else {
+                cell.configureUI(
+                    labelTitle: AddReminderSection.allCases[indexPath.section].toTitle,
+                    content: changedSections[indexPath.section - 1]
+                )
+            }
             return cell
         }
     }

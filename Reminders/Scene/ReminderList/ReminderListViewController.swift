@@ -7,10 +7,8 @@
 
 import UIKit
 
-import RealmSwift
-
 final class ReminderListViewController: BaseViewController {
-    var reminders: Results<Reminder>
+    var reminders: [Reminder]
     var viewType: ReminderCategory
     
     private lazy var reminderTableView: UITableView = {
@@ -25,7 +23,7 @@ final class ReminderListViewController: BaseViewController {
         return table
     }()
     
-    init(reminders: Results<Reminder>, viewType: ReminderCategory) {
+    init(reminders: [Reminder], viewType: ReminderCategory) {
         self.reminders = reminders
         self.viewType = viewType
         super.init(viewTitle: viewType.toString)
@@ -69,7 +67,11 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
         ) as? ReminderTableViewCell else { return UITableViewCell() }
         
         let reminder = reminders[indexPath.row]
-        cell.configureUI(title: reminder.title, content: reminder.content, date: reminder.date?.description)
+        cell.configureUI(
+            title: reminder.title,
+            content: reminder.content,
+            date: reminder.date.description
+        )
         return cell
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
