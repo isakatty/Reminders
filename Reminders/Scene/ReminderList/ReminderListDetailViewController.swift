@@ -85,9 +85,9 @@ final class ReminderListDetailViewController: BaseViewController {
         let tagChanged = changedTag != reminder.tag
         let priorityChanged = changedPriority?.toString != reminder.priority
         let dateChanged = changedDate != reminder.date
-        let imageChanged = changedImage != nil
-        print(titleChanged, contentChanged, tagChanged, priorityChanged, dateChanged, imageChanged, "⭕️")
-        naviEnable = titleChanged || contentChanged || tagChanged || priorityChanged || dateChanged || imageChanged
+        let imageChanged = changedImage == nil
+        
+        naviEnable = titleChanged || contentChanged || tagChanged || priorityChanged || dateChanged || changedImg
         
         configureNaviRightButton(title: "저장", buttonAction: #selector(rightBtnTapped), enable: naviEnable)
     }
@@ -97,6 +97,12 @@ final class ReminderListDetailViewController: BaseViewController {
         dismiss(animated: true)
     }
     @objc private func rightBtnTapped() {
+        if changedImg {
+            if let changedImage {
+                FileManagerHelper.removeToDocument(filename: "\(reminder.id)")
+                FileManagerHelper.saveImageToDocument(image: changedImage, filename: "\(reminder.id)")
+            }
+        }
         ReminderRepository().updateReminder(
             reminder,
             title: changedTitle,
@@ -104,7 +110,8 @@ final class ReminderListDetailViewController: BaseViewController {
             tag: changedTag,
             date: changedDate,
             isFlag: false,
-            priority: changedPriority ?? .none
+            priority: changedPriority ?? .none,
+            imageStr: "\(reminder.id)"
         )
         finishedDelegate?.fetchReminder(index: index)
         dismiss(animated: true)
@@ -125,9 +132,7 @@ extension ReminderListDetailViewController: PassDateProtocol, ReminderDetailCell
         if let text {
             changedTitle = text
             validateChanged()
-            print("?")
         }
-        print("X")
     }
     
     func passContentText(_ text: String?) {
@@ -164,6 +169,7 @@ extension ReminderListDetailViewController: PHPickerViewControllerDelegate {
         _ picker: PHPickerViewController,
         didFinishPicking results: [PHPickerResult]
     ) {
+        changedImg = false
         dismiss(animated: true)
         let itemProvider = results.last?.itemProvider
         
@@ -180,9 +186,9 @@ extension ReminderListDetailViewController: PHPickerViewControllerDelegate {
             self.changedImg.toggle()
             DispatchQueue.main.async {
                 self.detailTableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+                self.validateChanged()
             }
         }
-        changedImg = false
     }
 }
 
