@@ -38,7 +38,7 @@ final class FileManagerHelper {
             return UIImage(systemName: "star.fill")
         }
     }
-    func removeToDocument(filename: String) {
+    static func removeToDocument(filename: String) {
         guard let documentDirectory = FileManager.default.urls(
             for: .documentDirectory,
             in: .userDomainMask

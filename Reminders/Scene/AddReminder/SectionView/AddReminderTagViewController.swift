@@ -9,7 +9,7 @@ import UIKit
 
 final class AddReminderTagViewController: BaseViewController {
     weak var tagDelegate: PassDateProtocol?
-    private lazy var tagTextField: UITextField = {
+    lazy var tagTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "태그를 작성해주세요."
         tf.borderStyle = .roundedRect

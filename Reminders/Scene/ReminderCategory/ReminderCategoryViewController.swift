@@ -30,7 +30,6 @@ final class ReminderCategoryViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        print(realm.configuration.fileURL) // Realm 파일 위치 읽어오기
         fetchData()
     }
     override func viewWillAppear(_ animated: Bool) {

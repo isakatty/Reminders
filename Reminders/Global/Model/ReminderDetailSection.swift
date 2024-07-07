@@ -34,4 +34,18 @@ enum ReminderDetailSection: CaseIterable {
             "우선 순위"
         }
     }
+    var cellIdentifier: String {
+        switch self {
+        case .titleSection:
+            return ReminderDetailTitleCell.identifier
+        case .contentSection:
+            return ReminderDetailContentCell.identifier
+        case .flagSection:
+            return ReminderDetailFlagCell.identifier
+        case .tagSection, .dateSection, .prioritySection:
+            return AddReminderBasicCell.identifier
+        case .photoSection:
+            return ReminderDetailPhotoCell.identifier
+        }
+    }
 }

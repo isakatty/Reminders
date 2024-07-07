@@ -50,7 +50,31 @@ final class ReminderRepository: ReminderRepositoryProtocol {
         
         return Array(realm.objects(Reminder.self))
     }
-    
+    func updateReminder(_ reminder: Reminder, title: String?, content: String?, tag: String?, date: Date?, isFlag: Bool?, priority: Priority) {
+        do {
+            try realm.write {
+                if let title = title {
+                    reminder.title = title
+                }
+                if let content = content {
+                    reminder.content = content
+                }
+                if let tag = tag {
+                    reminder.tag = tag
+                }
+                if let date = date {
+                    reminder.date = date
+                }
+                if let isFlag = isFlag {
+                    reminder.isFlag = isFlag
+                }
+                
+                reminder.priority = priority.toString
+            }
+        } catch {
+            print("에러")
+        }
+    }
     func updateDoneReminder(_ reminder: Reminder) throws {
         do {
             try realm.write {

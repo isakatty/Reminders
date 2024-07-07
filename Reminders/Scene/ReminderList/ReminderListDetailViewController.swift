@@ -6,10 +6,21 @@
 //
 
 import UIKit
+import PhotosUI
 
 final class ReminderListDetailViewController: BaseViewController {
     var reminder: Reminder
+    var index: Int
     private var naviEnable: Bool = false
+    private var changedImg: Bool = false
+    private var changedImage: UIImage?
+    private var newReminder = Reminder(title: "", content: "", date: Date(), tag: "", priority: "", imageStr: "")
+    private var changedTag: String?
+    private var changedPriority: Priority?
+    private var changedDate: Date?
+    
+    weak var finishedDelegate: ReminderFinishedProtocol?
+    
     private lazy var detailTableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.delegate = self
@@ -23,8 +34,13 @@ final class ReminderListDetailViewController: BaseViewController {
         return tableView
     }()
     
-    init(reminder: Reminder) {
+    init(reminder: Reminder, index: Int) {
         self.reminder = reminder
+        self.index = index
+        
+        changedTag = reminder.tag
+        changedPriority = reminder.priority.toPriority()
+        changedDate = reminder.date
         
         super.init(viewTitle: "세부사항")
     }
@@ -35,8 +51,12 @@ final class ReminderListDetailViewController: BaseViewController {
         configureBackNavi(action: #selector(leftBtnTapped))
         configureNaviRightButton(title: "저장", buttonAction: #selector(rightBtnTapped), enable: naviEnable)
         navigationController?.navigationBar.prefersLargeTitles = false
+        validateChanged()
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        validateChanged()
+    }
     override func configureHierarchy() {
         view.addSubview(detailTableView)
     }
@@ -49,14 +69,93 @@ final class ReminderListDetailViewController: BaseViewController {
         }
     }
     
+    private func validateChanged() {
+        if (changedTag != reminder.tag) ||
+            (changedPriority?.toString != reminder.priority) ||
+            (changedDate != reminder.date) ||
+            (changedImage != nil) {
+            naviEnable = true
+            
+            configureNaviRightButton(title: "저장", buttonAction: #selector(rightBtnTapped), enable: naviEnable)
+        } else {
+            naviEnable = false
+        }
+    }
+    
     @objc private func leftBtnTapped() {
         // TODO: dismiss되기전에 기존 값이랑 비교해서 변한 값이 하나라도 있으면 Alert띄우는 방식
         dismiss(animated: true)
     }
     @objc private func rightBtnTapped() {
         print("save & dismiss", #function)
+        ReminderRepository().updateReminder(reminder, title: "일단 기둘", content: "너도 기둘", tag: changedTag, date: changedDate, isFlag: false, priority: changedPriority ?? .none)
+        finishedDelegate?.fetchReminder(index: index)
+        dismiss(animated: true)
+        
+    }
+    @objc private func imgBtnTapped() {
+        print(#function)
+        var config = PHPickerConfiguration()
+        config.selectionLimit = 1
+        config.filter = .any(of: [.images])
+        let picker = PHPickerViewController(configuration: config)
+        picker.delegate = self
+        present(picker, animated: true)
     }
 }
+extension ReminderListDetailViewController: PassDateProtocol {
+    func passDate(_ date: Date) {
+        print(#function)
+        changedDate = date
+        detailTableView.reloadData()
+    }
+    
+    func passPriority(_ priority: Priority) {
+        print(#function)
+        changedPriority = priority
+        detailTableView.reloadData()
+    }
+    
+    func passTags(_ text: String?) {
+        changedTag = text
+        detailTableView.reloadData()
+    }
+    
+    func passImage(_ image: UIImage?) {
+        print(#function)
+    }
+}
+
+
+// PHPickerVC 사용
+extension ReminderListDetailViewController: PHPickerViewControllerDelegate {
+    func picker(
+        _ picker: PHPickerViewController,
+        didFinishPicking results: [PHPickerResult]
+    ) {
+        dismiss(animated: true)
+        let itemProvider = results.last?.itemProvider
+        
+        guard let itemProvider,
+              itemProvider.canLoadObject(ofClass: UIImage.self)
+        else {
+            print("로드할 수 없는 상태이거나, results가 없거나")
+            return
+        }
+        
+        itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+            guard let self else { return }
+            self.changedImage = image as? UIImage
+            self.changedImg.toggle()
+            DispatchQueue.main.async {
+                self.detailTableView.reloadSections(IndexSet(integer: 1), with: .automatic)
+            }
+        }
+        changedImg = false
+    }
+}
+
+
 extension ReminderListDetailViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return ReminderDetailSection.allCases.count
@@ -87,26 +186,47 @@ extension ReminderListDetailViewController: UITableViewDelegate, UITableViewData
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ReminderDetailFlagCell.identifier, for: indexPath) as? ReminderDetailFlagCell else { return UITableViewCell () }
             cell.configureUI(isFlagged: reminder.isFlag)
             return cell
-        case .tagSection:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: AddReminderBasicCell.identifier, for: indexPath) as? AddReminderBasicCell else { return UITableViewCell () }
-            cell.configureUI(labelTitle: section.toString, content: reminder.tag?.addHashTag())
-            return cell
-        case .dateSection:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: AddReminderBasicCell.identifier, for: indexPath) as? AddReminderBasicCell else { return UITableViewCell () }
-            cell.configureUI(labelTitle: section.toString, content: reminder.date.changeDateFormat())
-            return cell
-        case .prioritySection:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: AddReminderBasicCell.identifier, for: indexPath) as? AddReminderBasicCell else { return UITableViewCell () }
-            cell.configureUI(labelTitle: section.toString, content: reminder.priority)
+        case .tagSection, .dateSection, .prioritySection:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: AddReminderBasicCell.identifier, for: indexPath) as? AddReminderBasicCell else { return UITableViewCell() }
+            switch section {
+            case .tagSection:
+                cell.configureUI(labelTitle: section.toString, content: changedTag?.addHashTag())
+            case .dateSection:
+                cell.configureUI(labelTitle: section.toString, content: changedDate?.changeDateFormat())
+            case .prioritySection:
+                cell.configureUI(labelTitle: section.toString, content: changedPriority?.toString)
+            default:
+                break
+            }
             return cell
         case .photoSection:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ReminderDetailPhotoCell.identifier, for: indexPath) as? ReminderDetailPhotoCell else { return UITableViewCell () }
-            cell.configureUI(imageStr: reminder.imageStr)
+            cell.addImgBtn.addTarget(self, action: #selector(imgBtnTapped), for: .touchUpInside)
+            changedImg ? cell.photoView.image = changedImage : cell.configureUI(imageStr: reminder.imageStr)
             return cell
         }
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(#function, indexPath.section, ReminderDetailSection.allCases[indexPath.section])
+        let section = ReminderDetailSection.allCases[indexPath.section]
+        
+        switch section {
+        case .tagSection:
+            let vc = AddReminderTagViewController(viewTitle: AddReminderSection.tag.toTitle)
+            vc.tagTextField.text = reminder.tag
+            vc.tagDelegate = self
+            navigationController?.pushViewController(vc, animated: true)
+        case .prioritySection:
+            let vc = AddReminderPriorityViewController(viewTitle: AddReminderSection.priority.toTitle)
+            vc.priorityDelegate = self
+            vc.sheetPresentationController?.detents = [.medium()]
+            present(vc, animated: true)
+        case .dateSection:
+            let vc = AddReminderDateViewController(viewTitle: AddReminderSection.dueDate.toTitle)
+            vc.dateDelegate = self
+            navigationController?.pushViewController(vc, animated: true)
+        default:
+            print("?")
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -114,7 +234,7 @@ extension ReminderListDetailViewController: UITableViewDelegate, UITableViewData
         switch section {
         case .photoSection:
             var isPhoto: Bool = false
-            if let photo = reminder.imageStr {
+            if reminder.imageStr != nil {
                 isPhoto.toggle()
             } else {
                 isPhoto = false

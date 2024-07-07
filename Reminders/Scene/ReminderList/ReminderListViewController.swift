@@ -9,6 +9,7 @@ import UIKit
 
 protocol ReminderFinishedProtocol: AnyObject {
     func finishedReminder(_ isDone: Bool, index: Int)
+    func fetchReminder(index: Int)
 }
 
 final class ReminderListViewController: BaseViewController {
@@ -56,6 +57,10 @@ final class ReminderListViewController: BaseViewController {
 }
 
 extension ReminderListViewController: ReminderFinishedProtocol {
+    func fetchReminder(index: Int) {
+        reminderTableView.reloadRows(at: [IndexPath.init(row: index, section: 0)], with: .automatic)
+    }
+    
     func finishedReminder(_ isDone: Bool, index: Int) {
         print(isDone, index, #function)
         // isDone만 받아서는 안되지 않나 .. ? id를 가져와야하는데
@@ -123,7 +128,7 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
         let delete = UIContextualAction(style: .destructive, title: "삭제") { [weak self] _, _, success in
             guard let self else { return }
             do {
-                // TODO: Image 삭제 로직 들어와야함
+                FileManagerHelper.removeToDocument(filename: "\(reminders[indexPath.row].id)")
                 try repository.deleteReminder(reminders[indexPath.row])
                 reminders.remove(at: indexPath.row)
                 success(true)
@@ -140,7 +145,8 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
-        let vc = ReminderListDetailViewController(reminder: reminders[indexPath.row])
+        let vc = ReminderListDetailViewController(reminder: reminders[indexPath.row], index: indexPath.row)
+        vc.finishedDelegate = self
         let navi = UINavigationController(rootViewController: vc)
         tableView.reloadRows(at: [indexPath], with: .automatic)
         present(navi, animated: true)
