@@ -16,6 +16,7 @@ final class ReminderDetailTitleCell: BaseTableViewCell {
         textField.borderStyle = .roundedRect
         textField.font = Constant.Font.regular17
         textField.delegate = self
+        textField.addTarget(self, action: #selector(changedTextField), for: .editingChanged)
         return textField
     }()
     
@@ -31,14 +32,13 @@ final class ReminderDetailTitleCell: BaseTableViewCell {
         titleTextField.placeholder = text
         originalTitle = text
     }
+    @objc private func changedTextField(_ sender: UITextField) {
+        passTitleDelegate?.passTitleText(sender.text)
+    }
 }
 
 extension ReminderDetailTitleCell: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.text = originalTitle
-        passTitleDelegate?.passTitleText(textField.text)
-    }
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        passTitleDelegate?.passTitleText(textField.text)
     }
 }

@@ -12,6 +12,7 @@ final class ReminderTableViewCell: BaseTableViewCell {
     
     private var alreadyDid: Bool = false
     private var index: Int = 0
+    
     private lazy var checkBtn: UIButton = {
         var config = UIButton.Configuration.plain()
         config.baseBackgroundColor = .clear
@@ -81,6 +82,7 @@ final class ReminderTableViewCell: BaseTableViewCell {
             make.bottom.equalToSuperview().inset(Constant.Spacing.eight.toCGFloat)
             make.leading.equalTo(checkBtn.snp.trailing).inset(-Constant.Spacing.twelve.toCGFloat)
             make.top.equalTo(reminderContentLabel.snp.bottom).offset(Constant.Spacing.eight.toCGFloat)
+            make.width.equalTo(120)
         }
         tagLabel.snp.makeConstraints { make in
             make.leading.equalTo(dueDateLabel.snp.trailing).inset(-Constant.Spacing.twelve.toCGFloat)

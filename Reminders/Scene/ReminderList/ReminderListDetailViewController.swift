@@ -16,9 +16,10 @@ protocol ReminderDetailCellPassDataProtocol: AnyObject {
 final class ReminderListDetailViewController: BaseViewController {
     var reminder: Reminder
     var index: Int
+    
     private var naviEnable: Bool = false
     private var changedImg: Bool = false
-    private var newReminder = Reminder(title: "", content: "", date: Date(), tag: "", priority: "", imageStr: "")
+    
     private var changedTag: String?
     private var changedPriority: Priority?
     private var changedDate: Date?
@@ -96,8 +97,6 @@ final class ReminderListDetailViewController: BaseViewController {
         dismiss(animated: true)
     }
     @objc private func rightBtnTapped() {
-        print("save & dismiss", #function)
-        print(changedTitle)
         ReminderRepository().updateReminder(
             reminder,
             title: changedTitle,
@@ -124,9 +123,9 @@ final class ReminderListDetailViewController: BaseViewController {
 extension ReminderListDetailViewController: PassDateProtocol, ReminderDetailCellPassDataProtocol {
     func passTitleText(_ text: String?) {
         if let text {
-            print("?")
             changedTitle = text
             validateChanged()
+            print("?")
         }
         print("X")
     }
