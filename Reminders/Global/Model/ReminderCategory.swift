@@ -66,11 +66,12 @@ enum ReminderCategory: CaseIterable {
         case .whole:
             return ReminderRepository().fetchReminders()
         case .flag:
-            return ReminderRepository().sortReminder(keyPath: "priority")
+            let sorted = ReminderRepository().sortReminder(keyPath: "isFlag").filter { $0.isFlag == true }
+            return sorted
         case .completed:
-            let sorted = ReminderRepository().sortReminder(keyPath: "idDone")
+            let sorted = ReminderRepository().sortReminder(keyPath: "isDone")
                                 .filter { reminder in
-                                    reminder.idDone == true
+                                    reminder.isDone == true
                                 }
             return sorted
         }

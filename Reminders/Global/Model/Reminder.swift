@@ -18,7 +18,8 @@ final class Reminder: Object {
     @Persisted var tag: String?
     @Persisted var priority: String
     @Persisted var imageStr: String?
-    @Persisted var idDone: Bool
+    @Persisted var isDone: Bool
+    @Persisted var isFlag: Bool
     
     convenience init(
         title: String,
@@ -35,6 +36,7 @@ final class Reminder: Object {
         self.tag = tag
         self.priority = priority
         self.imageStr = imageStr
-        self.idDone = false
+        self.isDone = false
+        self.isFlag = false
     }
 }

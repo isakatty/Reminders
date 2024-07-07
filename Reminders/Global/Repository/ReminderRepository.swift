@@ -24,7 +24,7 @@ protocol ReminderRepositoryProtocol {
     // R
     func fetchReminders() -> [Reminder]
     // U
-    func updateReminder(_ reminder: Reminder) throws
+    func updateDoneReminder(_ reminder: Reminder) throws
     // D
     func deleteReminder(_ reminder: Reminder) throws
     func deleteAllReminder() throws
@@ -51,10 +51,19 @@ final class ReminderRepository: ReminderRepositoryProtocol {
         return Array(realm.objects(Reminder.self))
     }
     
-    func updateReminder(_ reminder: Reminder) throws {
+    func updateDoneReminder(_ reminder: Reminder) throws {
         do {
             try realm.write {
-                reminder.idDone.toggle()
+                reminder.isDone.toggle()
+            }
+        } catch {
+            throw RealmError.invalidUpdate
+        }
+    }
+    func updateFlagReminder(_ reminder: Reminder) throws {
+        do {
+            try realm.write {
+                reminder.isFlag.toggle()
             }
         } catch {
             throw RealmError.invalidUpdate
@@ -109,7 +118,7 @@ final class ReminderRepository: ReminderRepositoryProtocol {
         )
         let sorted = realm.objects(Reminder.self)
             .filter(predicate)
-            .filter { $0.idDone == false }
+            .filter { $0.isDone == false }
         
         return Array(sorted)
     }

@@ -61,7 +61,7 @@ extension ReminderListViewController: ReminderFinishedProtocol {
         // isDone만 받아서는 안되지 않나 .. ? id를 가져와야하는데
         // 데이터 update
         do {
-            try repository.updateReminder(reminders[index])
+            try repository.updateDoneReminder(reminders[index])
         } catch {
             print("업데이트 실패")
         }
@@ -93,7 +93,7 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
             content: reminder.content,
             date: reminder.date,
             tag: reminder.tag?.addHashTag(),
-            isDone: reminder.idDone
+            isDone: reminder.isDone
         )
         cell.reminderDelegate = self
         
@@ -101,5 +101,39 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+    func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
+        let flag = UIContextualAction(style: .normal, title: "Flag") { [weak self] _, _, success in
+            guard let self else { return }
+            success(true)
+            do {
+                try repository.updateFlagReminder(reminders[indexPath.row])
+                // 왜 self가 붙은 놈으로 해야하지? 어차피 tableview가 들어있는데 함수의 매개변수로
+            } catch {
+                print("Flag 업데이트 실패")
+                success(false)
+            }
+        }
+        flag.image = UIImage(systemName: "flag")
+        flag.backgroundColor = UIColor.orange
+        
+        let delete = UIContextualAction(style: .destructive, title: "삭제") { [weak self] _, _, success in
+            guard let self else { return }
+            do {
+                // TODO: Image 삭제 로직 들어와야함
+                try repository.deleteReminder(reminders[indexPath.row])
+                reminders.remove(at: indexPath.row)
+                success(true)
+                tableView.reloadData()
+            } catch {
+                print("Delete 실패")
+                success(false)
+            }
+        }
+        delete.backgroundColor = UIColor.red
+        return UISwipeActionsConfiguration(actions: [delete, flag])
     }
 }
