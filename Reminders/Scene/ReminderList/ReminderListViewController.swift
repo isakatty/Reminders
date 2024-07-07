@@ -136,4 +136,13 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
         delete.backgroundColor = UIColor.red
         return UISwipeActionsConfiguration(actions: [delete, flag])
     }
+    func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath
+    ) {
+        let vc = ReminderListDetailViewController(reminder: reminders[indexPath.row])
+        let navi = UINavigationController(rootViewController: vc)
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+        present(navi, animated: true)
+    }
 }
