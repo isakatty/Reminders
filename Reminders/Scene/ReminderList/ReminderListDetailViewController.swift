@@ -14,9 +14,11 @@ final class ReminderListDetailViewController: BaseViewController {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.estimatedRowHeight = 100
         tableView.register(ReminderDetailTitleCell.self, forCellReuseIdentifier: ReminderDetailTitleCell.identifier)
         tableView.register(ReminderDetailContentCell.self, forCellReuseIdentifier: ReminderDetailContentCell.identifier)
         tableView.register(ReminderDetailFlagCell.self, forCellReuseIdentifier: ReminderDetailFlagCell.identifier)
+        tableView.register(ReminderDetailPhotoCell.self, forCellReuseIdentifier: ReminderDetailPhotoCell.identifier)
         tableView.register(AddReminderBasicCell.self, forCellReuseIdentifier: AddReminderBasicCell.identifier)
         return tableView
     }()
@@ -98,8 +100,8 @@ extension ReminderListDetailViewController: UITableViewDelegate, UITableViewData
             cell.configureUI(labelTitle: section.toString, content: reminder.priority)
             return cell
         case .photoSection:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: AddReminderBasicCell.identifier, for: indexPath) as? AddReminderBasicCell else { return UITableViewCell () }
-            
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ReminderDetailPhotoCell.identifier, for: indexPath) as? ReminderDetailPhotoCell else { return UITableViewCell () }
+            cell.configureUI(imageStr: reminder.imageStr)
             return cell
         }
     }
@@ -111,7 +113,13 @@ extension ReminderListDetailViewController: UITableViewDelegate, UITableViewData
         let section = ReminderDetailSection.allCases[indexPath.section]
         switch section {
         case .photoSection:
-            return UITableView.automaticDimension
+            var isPhoto: Bool = false
+            if let photo = reminder.imageStr {
+                isPhoto.toggle()
+            } else {
+                isPhoto = false
+            }
+            return isPhoto ? UITableView.automaticDimension : 60
         case .contentSection:
             return 120
         default:

@@ -92,6 +92,10 @@ extension AddReminderViewController: PassDateProtocol {
         }
         print(image)
         // 이미지
+        print(newReminder.id, "💥")
+        FileManagerHelper.saveImageToDocument(image: image, filename: "\(newReminder.id)")
+        changedSections[3] = "\(newReminder.id)"
+        newReminder.imageStr = "\(newReminder.id)"
         reloadSection(indexSet: 3)
     }
     
