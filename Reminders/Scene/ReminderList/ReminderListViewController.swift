@@ -63,8 +63,6 @@ extension ReminderListViewController: ReminderFinishedProtocol {
     
     func finishedReminder(_ isDone: Bool, index: Int) {
         print(isDone, index, #function)
-        // isDone만 받아서는 안되지 않나 .. ? id를 가져와야하는데
-        // 데이터 update
         do {
             try repository.updateDoneReminder(reminders[index])
         } catch {
@@ -116,7 +114,6 @@ extension ReminderListViewController: UITableViewDelegate, UITableViewDataSource
             success(true)
             do {
                 try repository.updateFlagReminder(reminders[indexPath.row])
-                // 왜 self가 붙은 놈으로 해야하지? 어차피 tableview가 들어있는데 함수의 매개변수로
             } catch {
                 print("Flag 업데이트 실패")
                 success(false)

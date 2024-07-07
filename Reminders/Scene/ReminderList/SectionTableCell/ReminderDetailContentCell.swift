@@ -8,10 +8,13 @@
 import UIKit
 
 final class ReminderDetailContentCell: BaseTableViewCell {
-    private let contentTextView: UITextView = {
+    weak var passDelegate: ReminderDetailCellPassDataProtocol?
+    
+    private lazy var contentTextView: UITextView = {
         let view = UITextView()
         view.font = Constant.Font.regular17
         // TODO: textView scroll 안되고 cell height이 늘어나야한다면 ?
+        view.delegate = self
         return view
     }()
     
@@ -26,5 +29,11 @@ final class ReminderDetailContentCell: BaseTableViewCell {
     
     func configureUI(content: String?) {
         contentTextView.text = content
+    }
+}
+extension ReminderDetailContentCell: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        print(textView.text)
+        passDelegate?.passContentText(textView.text)
     }
 }

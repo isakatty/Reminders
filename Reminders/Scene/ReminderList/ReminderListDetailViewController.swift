@@ -8,16 +8,23 @@
 import UIKit
 import PhotosUI
 
+protocol ReminderDetailCellPassDataProtocol: AnyObject {
+    func passTitleText(_ text: String?)
+    func passContentText(_ text: String?)
+}
+
 final class ReminderListDetailViewController: BaseViewController {
     var reminder: Reminder
     var index: Int
     private var naviEnable: Bool = false
     private var changedImg: Bool = false
-    private var changedImage: UIImage?
     private var newReminder = Reminder(title: "", content: "", date: Date(), tag: "", priority: "", imageStr: "")
     private var changedTag: String?
     private var changedPriority: Priority?
     private var changedDate: Date?
+    private var changedImage: UIImage?
+    private var changedTitle: String?
+    private var changedContent: String?
     
     weak var finishedDelegate: ReminderFinishedProtocol?
     
@@ -41,6 +48,8 @@ final class ReminderListDetailViewController: BaseViewController {
         changedTag = reminder.tag
         changedPriority = reminder.priority.toPriority()
         changedDate = reminder.date
+        changedTitle = reminder.title
+        changedContent = reminder.content
         
         super.init(viewTitle: "세부사항")
     }
@@ -70,16 +79,16 @@ final class ReminderListDetailViewController: BaseViewController {
     }
     
     private func validateChanged() {
-        if (changedTag != reminder.tag) ||
-            (changedPriority?.toString != reminder.priority) ||
-            (changedDate != reminder.date) ||
-            (changedImage != nil) {
-            naviEnable = true
-            
-            configureNaviRightButton(title: "저장", buttonAction: #selector(rightBtnTapped), enable: naviEnable)
-        } else {
-            naviEnable = false
-        }
+        let titleChanged = changedTitle != reminder.title
+        let contentChanged = changedContent != reminder.content
+        let tagChanged = changedTag != reminder.tag
+        let priorityChanged = changedPriority?.toString != reminder.priority
+        let dateChanged = changedDate != reminder.date
+        let imageChanged = changedImage != nil
+        print(titleChanged, contentChanged, tagChanged, priorityChanged, dateChanged, imageChanged, "⭕️")
+        naviEnable = titleChanged || contentChanged || tagChanged || priorityChanged || dateChanged || imageChanged
+        
+        configureNaviRightButton(title: "저장", buttonAction: #selector(rightBtnTapped), enable: naviEnable)
     }
     
     @objc private func leftBtnTapped() {
@@ -88,7 +97,16 @@ final class ReminderListDetailViewController: BaseViewController {
     }
     @objc private func rightBtnTapped() {
         print("save & dismiss", #function)
-        ReminderRepository().updateReminder(reminder, title: "일단 기둘", content: "너도 기둘", tag: changedTag, date: changedDate, isFlag: false, priority: changedPriority ?? .none)
+        print(changedTitle)
+        ReminderRepository().updateReminder(
+            reminder,
+            title: changedTitle,
+            content: changedContent,
+            tag: changedTag,
+            date: changedDate,
+            isFlag: false,
+            priority: changedPriority ?? .none
+        )
         finishedDelegate?.fetchReminder(index: index)
         dismiss(animated: true)
         
@@ -103,7 +121,23 @@ final class ReminderListDetailViewController: BaseViewController {
         present(picker, animated: true)
     }
 }
-extension ReminderListDetailViewController: PassDateProtocol {
+extension ReminderListDetailViewController: PassDateProtocol, ReminderDetailCellPassDataProtocol {
+    func passTitleText(_ text: String?) {
+        if let text {
+            print("?")
+            changedTitle = text
+            validateChanged()
+        }
+        print("X")
+    }
+    
+    func passContentText(_ text: String?) {
+        if let text {
+            changedContent = text
+        }
+        validateChanged()
+    }
+    
     func passDate(_ date: Date) {
         print(#function)
         changedDate = date
@@ -125,8 +159,6 @@ extension ReminderListDetailViewController: PassDateProtocol {
         print(#function)
     }
 }
-
-
 // PHPickerVC 사용
 extension ReminderListDetailViewController: PHPickerViewControllerDelegate {
     func picker(
@@ -176,11 +208,13 @@ extension ReminderListDetailViewController: UITableViewDelegate, UITableViewData
         switch section {
         case .titleSection:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ReminderDetailTitleCell.identifier, for: indexPath) as? ReminderDetailTitleCell else { return UITableViewCell () }
-            cell.configureUI(text: reminder.title)
+            cell.passTitleDelegate = self
+            cell.configureUI(text: changedTitle ?? "")
             return cell
         case .contentSection:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ReminderDetailContentCell.identifier, for: indexPath) as? ReminderDetailContentCell else { return UITableViewCell () }
-            cell.configureUI(content: reminder.content)
+            cell.passDelegate = self
+            cell.configureUI(content: changedContent)
             return cell
         case .flagSection:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ReminderDetailFlagCell.identifier, for: indexPath) as? ReminderDetailFlagCell else { return UITableViewCell () }

@@ -9,6 +9,7 @@ import UIKit
 
 final class ReminderDetailTitleCell: BaseTableViewCell {
     var originalTitle: String?
+    weak var passTitleDelegate: ReminderDetailCellPassDataProtocol?
     
     private lazy var titleTextField: UITextField = {
         let textField = UITextField()
@@ -35,5 +36,9 @@ final class ReminderDetailTitleCell: BaseTableViewCell {
 extension ReminderDetailTitleCell: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.text = originalTitle
+        passTitleDelegate?.passTitleText(textField.text)
+    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        passTitleDelegate?.passTitleText(textField.text)
     }
 }
