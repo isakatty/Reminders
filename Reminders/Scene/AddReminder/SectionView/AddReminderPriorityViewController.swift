@@ -10,6 +10,8 @@ import UIKit
 // TODO: custom bottom sheet로 바꾸거나 pull down or pop up 으로 변경할 것.
 
 final class AddReminderPriorityViewController: BaseViewController {
+    private let viewModel: AddReminderViewModel = AddReminderViewModel()
+    
     var priorityDelegate: PassDateProtocol?
     lazy var prioritySegmented: UISegmentedControl = {
         let seg = UISegmentedControl()
@@ -33,7 +35,19 @@ final class AddReminderPriorityViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        bindData()
     }
+    
+    private func bindData() {
+        viewModel.outputPriority.bind { [weak self] priority in
+            guard let priority,
+                  let self else { return }
+            self.priorityLabel.text = priority.toString
+            self.priorityDelegate?.passPriority(priority)
+            dismiss(animated: true)
+        }
+    }
+    
     override func configureHierarchy() {
         [prioritySegmented, priorityLabel]
             .forEach { view.addSubview($0) }
@@ -67,8 +81,6 @@ final class AddReminderPriorityViewController: BaseViewController {
     }
     @objc private func segmentedTapped(_ sender: UISegmentedControl) {
         // value Changed여야 값이 존재.
-        priorityLabel.text = Priority.allCases[sender.selectedSegmentIndex].toString
-        priorityDelegate?.passPriority(Priority.allCases[sender.selectedSegmentIndex])
-        dismiss(animated: true)
+        viewModel.inputSegmentedTrigger.value = sender.selectedSegmentIndex
     }
 }
