@@ -9,6 +9,8 @@ import UIKit
 
 final class AddReminderDateViewController: BaseViewController {
     weak var dateDelegate: PassDateProtocol?
+    private let viewModel = AddReminderViewModel()
+    
     private var date: Date = Date()
     private lazy var datePicker: UIDatePicker = {
         let date = UIDatePicker()
@@ -21,7 +23,21 @@ final class AddReminderDateViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        bindData()
         configureBackNavi(action: #selector(customBackTapped))
+    }
+    private func bindData() {
+        viewModel.outputDate.bind { [weak self] date in
+            guard let self else { return }
+            self.date = date
+        }
+        viewModel.outputBackBtn.bind { [weak self] isTrue in
+            guard let self else { return }
+            if isTrue {
+                self.dateDelegate?.passDate(self.date)
+                navigationController?.popViewController(animated: true)
+            }
+        }
     }
     
     override func configureHierarchy() {
@@ -38,11 +54,10 @@ final class AddReminderDateViewController: BaseViewController {
         }
     }
     @objc private func dateChanged(_ datePicker: UIDatePicker) {
-        print(type(of: datePicker.date))
-        date = datePicker.date
+        viewModel.inputDatePickerTrigger.value = datePicker.date
     }
     @objc private func customBackTapped() {
-        dateDelegate?.passDate(date)
-        navigationController?.popViewController(animated: true)
+        print(#function)
+        viewModel.inputBackBtnTrigger.value = true
     }
 }
