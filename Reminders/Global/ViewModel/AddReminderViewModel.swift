@@ -10,11 +10,13 @@ import Foundation
 final class AddReminderViewModel {
     var inputSegmentedTrigger = Observable(0)
     var inputDatePickerTrigger = Observable(Date())
-    var inputBackBtnTrigger: Observable<Bool> = Observable(false)
+    
+    // input의 초기값으로 nil
+    var inputBackBtnTrigger: Observable<Void?> = Observable(nil)
     
     var outputPriority: Observable<Priority?> = Observable(Priority.none)
     var outputDate = Observable(Date())
-    var outputBackBtn: Observable<Bool> = Observable(false)
+    var outputBackBtn: Observable<Void?> = Observable(nil)
     
     init() {
         inputSegmentedTrigger.bind { [weak self] index in
@@ -25,11 +27,9 @@ final class AddReminderViewModel {
             guard let self else { return }
             self.outputDate.value = date
         }
-        inputBackBtnTrigger.bind { [weak self] isTrue in
+        inputBackBtnTrigger.bind { [weak self] value in
             guard let self else { return }
-            if isTrue {
-                self.outputBackBtn.value = true
-            }
+            self.outputBackBtn.value = value
         }
     }
     

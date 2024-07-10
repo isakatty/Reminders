@@ -31,11 +31,15 @@ final class AddReminderDateViewController: BaseViewController {
             guard let self else { return }
             self.date = date
         }
-        viewModel.outputBackBtn.bind { [weak self] isTrue in
+        viewModel.outputBackBtn.bind { [weak self] value in
             guard let self else { return }
-            if isTrue {
+            print(value, "☄️")
+            // Observable 초기값으로 무조건 nil을 주게되니까 조건문으로 처리를 해주지 않으면 바로 코드 실행됨.
+            if value != nil {
                 self.dateDelegate?.passDate(self.date)
                 navigationController?.popViewController(animated: true)
+            } else {
+                print("여기")
             }
         }
     }
@@ -58,6 +62,7 @@ final class AddReminderDateViewController: BaseViewController {
     }
     @objc private func customBackTapped() {
         print(#function)
-        viewModel.inputBackBtnTrigger.value = true
+        // backBtnTapped이 호출되었을 때, nil이 아닌 빈 튜플을 넘겨주는데용
+        viewModel.inputBackBtnTrigger.value = ()
     }
 }
